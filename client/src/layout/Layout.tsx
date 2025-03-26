@@ -4,9 +4,17 @@ import Header from "./Header";
 import Navbar from "./Navbar";
 import AppRoutes from "../routes/Routes";
 import Footer from "./Footer";
+import { useWeb3 } from "../providers/Web3Provider";
+import ConnectWallet from "../routes/ConnectWallet";
 
 const Layout = () => {
   const [opened, { toggle }] = useDisclosure();
+  const { account } = useWeb3();
+
+  if (!account) {
+    return <ConnectWallet />;
+  }
+
   return (
     <AppShell
       header={{ height: { base: 60, md: 70, lg: 80 } }}
