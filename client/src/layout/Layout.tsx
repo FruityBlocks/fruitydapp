@@ -3,6 +3,7 @@ import { useDisclosure } from "@mantine/hooks";
 import Header from "./Header";
 import Navbar from "./Navbar";
 import AppRoutes from "../routes/Routes";
+import Footer from "./Footer";
 
 const Layout = () => {
   const [opened, { toggle }] = useDisclosure();
@@ -21,6 +22,7 @@ const Layout = () => {
       <AppShell.Main>
         <AppRoutes />
       </AppShell.Main>
+      <Footer />
     </AppShell>
   );
 };
