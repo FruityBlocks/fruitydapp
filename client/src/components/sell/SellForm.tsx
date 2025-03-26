@@ -21,7 +21,6 @@ const SellForm = () => {
       style={{
         display: "flex",
         justifyContent: "center",
-        height: "100vh",
         marginTop: "2rem",
       }}
     >
