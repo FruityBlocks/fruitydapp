@@ -8,5 +8,6 @@
 3. Run : npm install
 4. Run : npm run dev
 5. Go to http://localhost:3000/
-
+6. Connect to the App with a valid MetaMask user Account!
+7. Enjoy!
 ```
