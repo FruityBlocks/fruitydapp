@@ -1,5 +1,5 @@
 import { Text, Box } from "@mantine/core";
-import { IconLemon } from "@tabler/icons-react";
+import { IconApple } from "@tabler/icons-react";
 import { useNavigate } from "react-router";
 
 const Logo = () => {
@@ -26,12 +26,11 @@ const Logo = () => {
         fw={700}
         fz="xl"
         style={{
-          fontFamily: "'Lobster', system-ui",
           letterSpacing: "-1px",
         }}
       >
         FruityBlocks
-        <IconLemon size={20} color="white" />
+        <IconApple size={21} color="white" />
       </Text>
     </Box>
   );

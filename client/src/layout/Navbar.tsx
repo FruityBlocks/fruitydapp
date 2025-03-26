@@ -1,4 +1,4 @@
-import { AppShell, Stack, NavLink } from "@mantine/core";
+import { AppShell, Stack, NavLink, Text } from "@mantine/core";
 import { Link, useLocation } from "react-router";
 import { IconCurrencyEthereum, IconHome2, IconUser } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
@@ -21,25 +21,28 @@ const Navbar = ({ toggle }: NavBarProps) => {
           onClick={toggle}
           component={Link}
           to="/"
-          label="Home"
-          leftSection={<IconHome2 size={16} stroke={1.5} />}
+          label={<Text size="xl">Home</Text>}
+          leftSection={<IconHome2 size={22} stroke={1.5} />}
           active={activeLink === "/"}
+          style={{ borderRadius: "12px", padding: "8px 16px" }}
         />
         <NavLink
-          leftSection={<IconCurrencyEthereum size={16} stroke={1.5} />}
+          leftSection={<IconCurrencyEthereum size={22} stroke={1.5} />}
           onClick={toggle}
           component={Link}
           to="/buy"
-          label="MarketPlace"
+          label={<Text size="xl">MarketPlace</Text>}
           active={activeLink === "/buy"}
+          style={{ borderRadius: "12px", padding: "8px 16px" }}
         />
         <NavLink
-          leftSection={<IconUser size={16} stroke={1.5} />}
+          leftSection={<IconUser size={22} stroke={1.5} />}
           onClick={toggle}
           component={Link}
           to="/profile"
-          label="Profile"
+          label={<Text size="xl">Profile</Text>}
           active={activeLink === "/profile"}
+          style={{ borderRadius: "12px", padding: "8px 16px" }}
         />
       </Stack>
     </AppShell.Navbar>
