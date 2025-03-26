@@ -4,7 +4,7 @@ import Layout from "./layout/Layout";
 
 function App() {
   return (
-    <MantineProvider theme={theme}>
+    <MantineProvider defaultColorScheme="dark" theme={theme}>
       <Layout />
     </MantineProvider>
   );

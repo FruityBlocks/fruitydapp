@@ -1,5 +1,5 @@
-import { Image } from "@mantine/core";
-import logo from "/LogoFruity.svg";
+import { Text, Box } from "@mantine/core";
+import { IconLemon } from "@tabler/icons-react";
 import { useNavigate } from "react-router";
 
 const Logo = () => {
@@ -10,14 +10,31 @@ const Logo = () => {
   };
 
   return (
-    <Image
+    <Box
+      component="div"
       onClick={handleClick}
-      draggable="false"
-      src={logo}
-      alt="logo"
-      width={300}
-      height={50}
-    />
+      style={{
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        gap: "8px",
+      }}
+    >
+      <Text
+        variant="gradient"
+        gradient={{ from: "fruity-orange", to: "white", deg: 45 }}
+        fw={700}
+        fz="xl"
+        style={{
+          fontFamily: "'Lobster', system-ui",
+          letterSpacing: "-1px",
+        }}
+      >
+        FruityBlocks
+        <IconLemon size={20} color="white" />
+      </Text>
+    </Box>
   );
 };
+
 export default Logo;
