@@ -1,6 +1,11 @@
 import { AppShell, Stack, NavLink, Text } from "@mantine/core";
 import { Link, useLocation } from "react-router";
-import { IconCurrencyEthereum, IconHome2, IconUser } from "@tabler/icons-react";
+import {
+  IconBuildingStore,
+  IconCurrencyEthereum,
+  IconHome2,
+  IconUser,
+} from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 interface NavBarProps {
   toggle: () => void;
@@ -27,12 +32,21 @@ const Navbar = ({ toggle }: NavBarProps) => {
           style={{ borderRadius: "12px", padding: "8px 16px" }}
         />
         <NavLink
-          leftSection={<IconCurrencyEthereum size={22} stroke={1.5} />}
+          leftSection={<IconBuildingStore size={22} stroke={1.5} />}
           onClick={toggle}
           component={Link}
           to="/buy"
           label={<Text size="xl">MarketPlace</Text>}
           active={activeLink === "/buy"}
+          style={{ borderRadius: "12px", padding: "8px 16px" }}
+        />
+        <NavLink
+          leftSection={<IconCurrencyEthereum size={22} stroke={1.5} />}
+          onClick={toggle}
+          component={Link}
+          to="/sell"
+          label={<Text size="xl">Sell</Text>}
+          active={activeLink === "/sell"}
           style={{ borderRadius: "12px", padding: "8px 16px" }}
         />
         <NavLink

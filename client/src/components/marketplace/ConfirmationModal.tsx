@@ -1,6 +1,7 @@
-import { Button, Group, Modal, Stack, Text, Title } from "@mantine/core";
+import { Modal, Stack, Text, Title } from "@mantine/core";
 import { Fruit } from "../../tempData";
 import { IconCurrencyEthereum } from "@tabler/icons-react";
+import ButtonGroup from "../ButtonGroup";
 
 interface ConfirmationModalProps {
   opened: boolean;
@@ -19,12 +20,7 @@ const ConfirmationModal = ({ opened, close, item }: ConfirmationModalProps) => {
         <Text size="md">
           Seller : {item.seller.slice(0, 6)}...{item.seller.slice(-6)}
         </Text>
-        <Group mt="lg" justify="flex-end">
-          <Button variant="outline" onClick={close}>
-            Cancel
-          </Button>
-          <Button color="green">Confirm</Button>
-        </Group>
+        <ButtonGroup cancel={close} leftLabel="Cancel" rightLabel="Confirm" />
       </Stack>
     </Modal>
   );
