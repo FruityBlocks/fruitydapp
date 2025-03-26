@@ -1,6 +1,8 @@
-import { Badge, Card, Group, Modal, Stack, Text } from "@mantine/core";
+import { Badge, Card, Group, Stack, Text } from "@mantine/core";
 import { Fruit } from "../../tempData";
 import { useDisclosure } from "@mantine/hooks";
+import ConfirmationModal from "./ConfirmationModal";
+import { IconCurrencyEthereum } from "@tabler/icons-react";
 
 interface CardFruitProps {
   index: number;
@@ -40,19 +42,15 @@ const CardFruit = ({ index, item }: CardFruitProps) => {
             Type: {item.type}
           </Text>
           <Text size="xl" c="green">
-            ${item.price}
+            <IconCurrencyEthereum size={17} />
+            {item.price}
           </Text>
           <Badge color="fruity-orange.2" variant="light">
             Seller: {item.seller.slice(0, 6)}...{item.seller.slice(-4)}
           </Badge>
         </Stack>
       </Card>
-      <Modal
-        opened={opened}
-        onClose={close}
-        centered
-        title="Are you sure you want to buy this item?"
-      ></Modal>
+      <ConfirmationModal item={item} opened={opened} close={close} />
     </>
   );
 };
