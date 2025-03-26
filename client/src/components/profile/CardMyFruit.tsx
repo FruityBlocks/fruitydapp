@@ -45,7 +45,7 @@ const CardMyFruit = ({ item }: CardMyFruitsProps) => {
             {item.price}
           </Text>
           <Badge onClick={open} color="fruity-orange.2" variant="light">
-            Rate Buyer
+            Rate Seller
           </Badge>
         </Stack>
       </Card>
