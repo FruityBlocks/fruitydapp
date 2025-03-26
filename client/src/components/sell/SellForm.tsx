@@ -2,12 +2,17 @@ import { Box, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconCurrencyEthereum, IconPencil } from "@tabler/icons-react";
 import ButtonGroup from "../ButtonGroup";
+import { validateFruitName, validatePrice } from "../../utils/formValidation";
 
 const SellForm = () => {
   const form = useForm({
     initialValues: {
       fruitName: "",
-      price: 0,
+      price: "",
+    },
+    validate: {
+      fruitName: validateFruitName,
+      price: validatePrice,
     },
   });
 
