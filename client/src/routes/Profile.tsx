@@ -10,7 +10,8 @@ const Profile = () => {
     <Box>
       <Title order={1}>Welcome!</Title>
       <Title mt={10} order={5}>
-        Account : {account ? account : ""}
+        Account :{" "}
+        {account ? account.slice(0, 4) + "..." + account.slice(-4) : ""}
       </Title>
       <MyFruits />
       <GridEvaluations evals={evals} />

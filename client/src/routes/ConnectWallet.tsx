@@ -24,13 +24,13 @@ const ConnectWallet = () => {
   };
 
   return (
-    <Container size="xs" h="100vh">
+    <Container size="xs">
       <Flex gap="md" justify="center" align="center" direction="column" h="75%">
         <Image src="/LogoFruity.png" draggable="false" />
         <Title order={1} ta="center">
           Connect Your Wallet
         </Title>
-        <Button onClick={handleConnect} size="md">
+        <Button mb={20} onClick={handleConnect} size="md">
           Connect Wallet
         </Button>
       </Flex>

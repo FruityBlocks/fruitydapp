@@ -1,4 +1,4 @@
-import { AppShell } from "@mantine/core";
+import { AppShell, Container, Flex, Loader } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Header from "./Header";
 import Navbar from "./Navbar";
@@ -8,10 +8,20 @@ import { Navigate, Outlet } from "react-router";
 
 const Layout = () => {
   const [opened, { toggle }] = useDisclosure();
-  const { account } = useWeb3();
+  const { account, isConnecting } = useWeb3();
 
   if (!account) {
     return <Navigate to={"/connect-wallet"} replace />;
+  }
+
+  if (isConnecting) {
+    return (
+      <Container size="xs" h="100vh">
+        <Flex justify="center" align="center" direction="column" h="100%">
+          <Loader size="xl" />
+        </Flex>
+      </Container>
+    );
   }
 
   return (
