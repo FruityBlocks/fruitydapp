@@ -4,6 +4,7 @@ import MarketPlace from "./MarketPlace";
 import Profile from "./Profile";
 import Sell from "./Sell";
 import ConnectWallet from "./ConnectWallet";
+import Layout from "../layout/Layout";
 import { ProtectedRoute } from "./ProtectedRoute";
 
 const AppRoutes = () => {
@@ -11,38 +12,41 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/connect-wallet" element={<ConnectWallet />} />
 
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <Home />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/buy"
-        element={
-          <ProtectedRoute>
-            <MarketPlace />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRoute>
-            <Profile />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/sell"
-        element={
-          <ProtectedRoute>
-            <Sell />
-          </ProtectedRoute>
-        }
-      />
+      <Route element={<Layout />}>
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/buy"
+          element={
+            <ProtectedRoute>
+              <MarketPlace />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/sell"
+          element={
+            <ProtectedRoute>
+              <Sell />
+            </ProtectedRoute>
+          }
+        />
+      </Route>
+
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );

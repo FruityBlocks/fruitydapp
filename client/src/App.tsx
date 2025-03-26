@@ -1,13 +1,13 @@
 import { MantineProvider } from "@mantine/core";
 import { theme } from "./theme/theme";
-import Layout from "./layout/Layout";
 import { Web3Provider } from "./providers/Web3Provider";
+import AppRoutes from "./routes/Routes";
 
 function App() {
   return (
     <Web3Provider>
       <MantineProvider defaultColorScheme="dark" theme={theme}>
-        <Layout />
+        <AppRoutes />
       </MantineProvider>
     </Web3Provider>
   );

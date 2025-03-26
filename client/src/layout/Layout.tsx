@@ -2,17 +2,16 @@ import { AppShell } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Header from "./Header";
 import Navbar from "./Navbar";
-import AppRoutes from "../routes/Routes";
 import Footer from "./Footer";
 import { useWeb3 } from "../providers/Web3Provider";
-import ConnectWallet from "../routes/ConnectWallet";
+import { Navigate, Outlet } from "react-router";
 
 const Layout = () => {
   const [opened, { toggle }] = useDisclosure();
   const { account } = useWeb3();
 
   if (!account) {
-    return <ConnectWallet />;
+    return <Navigate to={"/connect-wallet"} replace />;
   }
 
   return (
@@ -28,7 +27,7 @@ const Layout = () => {
       <Header opened={opened} toggle={toggle} />
       <Navbar toggle={toggle} />
       <AppShell.Main>
-        <AppRoutes />
+        <Outlet />
       </AppShell.Main>
       <Footer />
     </AppShell>
