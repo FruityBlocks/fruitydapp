@@ -1,13 +1,13 @@
 import { Box, Title } from "@mantine/core";
 import { evals } from "../tempData";
 import GridEvaluations from "../components/profile/GridEvaluations";
-import GridMyFruits from "../components/profile/GridMyFruits";
+import MyFruits from "../components/profile/MyFruits";
 
 const Profile = () => {
   return (
     <Box>
-      <Title order={1}>Profile</Title>
-      <GridMyFruits />
+      <Title order={1}>Welcome!</Title>
+      <MyFruits />
       <GridEvaluations evals={evals} />
     </Box>
   );
