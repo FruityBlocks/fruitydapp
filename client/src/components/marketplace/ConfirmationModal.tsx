@@ -1,28 +1,94 @@
-import { Modal, Stack, Text, Title } from "@mantine/core";
+import { Modal, Stack, Text, Title, Rating, Textarea } from "@mantine/core";
 import { Fruit } from "../../tempData";
 import { IconCurrencyEthereum } from "@tabler/icons-react";
 import ButtonGroup from "../ButtonGroup";
+import { ModalType } from "../../utils/enums";
+import { useForm } from "@mantine/form";
+import { validateComment } from "../../utils/formValidation";
 
 interface ConfirmationModalProps {
   opened: boolean;
   close: () => void;
+  type: ModalType;
   item: Fruit;
 }
 
-const ConfirmationModal = ({ opened, close, item }: ConfirmationModalProps) => {
+interface FormValuesRate {
+  comment: string;
+  rating: number;
+}
+
+const ConfirmationModal = ({
+  opened,
+  close,
+  item,
+  type,
+}: ConfirmationModalProps) => {
+  const form = useForm({
+    initialValues: {
+      comment: "",
+      rating: 0,
+    },
+    validate: {
+      comment: validateComment,
+      rating: (value: number) => (value === 0 ? "Rating cannot be 0" : null),
+    },
+  });
+
+  const handleSubmit = (values: FormValuesRate) => {
+    if (form.errors.comment || form.errors.rating) return;
+    console.log(values);
+    close();
+  };
+
   return (
     <Modal opened={opened} onClose={close} centered>
       <Title size="lg" c="fruity-orange">
-        You are about to buy {item.name} for <IconCurrencyEthereum size={20} />{" "}
-        {item.price}
+        {type === ModalType.BUY ? (
+          <>
+            You are about to buy {item.name} for{" "}
+            <IconCurrencyEthereum size={20} /> {item.price}
+          </>
+        ) : (
+          "Rate the buyer"
+        )}
       </Title>
+
       <Stack mt="lg">
         <Text size="md">
-          Seller : {item.seller.slice(0, 6)}...{item.seller.slice(-6)}
+          Seller: {item.seller.slice(0, 6)}...{item.seller.slice(-4)}
         </Text>
-        <ButtonGroup cancel={close} leftLabel="Cancel" rightLabel="Confirm" />
+
+        {type === ModalType.RATE && (
+          <>
+            <Rating
+              size="lg"
+              value={form.values.rating}
+              onChange={(rating) => form.setFieldValue("rating", rating)}
+            />
+            {form.errors.rating && (
+              <Text c="red" size="sm">
+                {form.errors.rating}
+              </Text>
+            )}
+            <Textarea
+              placeholder="Write a comment..."
+              autosize
+              minRows={3}
+              {...form.getInputProps("comment")}
+            />
+          </>
+        )}
+
+        <ButtonGroup
+          submit={form.onSubmit(handleSubmit)}
+          cancel={close}
+          leftLabel="Cancel"
+          rightLabel="Confirm"
+        />
       </Stack>
     </Modal>
   );
 };
+
 export default ConfirmationModal;

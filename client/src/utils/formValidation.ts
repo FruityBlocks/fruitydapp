@@ -11,3 +11,11 @@ export const validatePrice = (value: string) => {
     return "Enter a valid positive number";
   return null;
 };
+
+export const validateComment = (value: string) => {
+  if (value.length > 200)
+    return "Comment cannot be longer than 200 characters.";
+  if (/[^a-zA-Z0-9\s]/.test(value))
+    return "Comment cannot contain special characters.";
+  return null;
+};

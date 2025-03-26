@@ -5,6 +5,7 @@ interface ButtonGroupProps {
   leftLabel: string;
   reset?: () => void;
   cancel?: () => void;
+  submit?: () => void;
 }
 
 const ButtonGroup = ({
@@ -12,6 +13,7 @@ const ButtonGroup = ({
   reset,
   rightLabel,
   leftLabel,
+  submit,
 }: ButtonGroupProps) => {
   return (
     <Group mt="lg" justify="flex-end">
@@ -24,7 +26,7 @@ const ButtonGroup = ({
       >
         {leftLabel}
       </Button>
-      <Button type="submit" color="green">
+      <Button onClick={submit} type="submit" color="green">
         {rightLabel}
       </Button>
     </Group>

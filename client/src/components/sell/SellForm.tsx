@@ -28,17 +28,17 @@ const SellForm = () => {
         <form onSubmit={form.onSubmit((values) => console.log(values))}>
           <TextInput
             mt={20}
-            label={<Text size="lg">Fruit Name</Text>}
+            label={<Text size="lg">Fruit Name {<IconPencil size={16} />}</Text>}
             placeholder="Enter fruit name"
-            rightSection={<IconPencil size={18} />}
             {...form.getInputProps("fruitName")}
           />
 
           <TextInput
             mt={10}
-            label={<Text size="lg">Price</Text>}
+            label={
+              <Text size="lg">Price{<IconCurrencyEthereum size={16} />}</Text>
+            }
             placeholder="Enter price"
-            rightSection={<IconCurrencyEthereum size={18} />}
             {...form.getInputProps("price")}
           />
           <ButtonGroup

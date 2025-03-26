@@ -3,20 +3,20 @@ import { Fruit } from "../../tempData";
 import { useDisclosure } from "@mantine/hooks";
 import ConfirmationModal from "./ConfirmationModal";
 import { IconCurrencyEthereum } from "@tabler/icons-react";
+import { ModalType } from "../../utils/enums";
 
 interface CardFruitProps {
-  index: number;
   item: Fruit;
 }
 
-const CardFruit = ({ index, item }: CardFruitProps) => {
+const CardFruit = ({ item }: CardFruitProps) => {
   const [opened, { open, close }] = useDisclosure(false);
 
   return (
     <>
       <Card
         onClick={open}
-        key={index}
+        key={item.seller}
         shadow="sm"
         padding="lg"
         radius="md"
@@ -50,7 +50,12 @@ const CardFruit = ({ index, item }: CardFruitProps) => {
           </Badge>
         </Stack>
       </Card>
-      <ConfirmationModal item={item} opened={opened} close={close} />
+      <ConfirmationModal
+        type={ModalType.BUY}
+        item={item}
+        opened={opened}
+        close={close}
+      />
     </>
   );
 };
