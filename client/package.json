@@ -15,7 +15,8 @@
     "@mantine/hooks": "^7.17.2",
     "chroma-js": "^3.1.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-router": "^7.4.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

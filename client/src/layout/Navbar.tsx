@@ -1,14 +1,24 @@
-import { AppShell, Skeleton } from "@mantine/core";
+import { AppShell, Stack } from "@mantine/core";
+import { NavLink } from "react-router";
 
-const Navbar = () => {
+interface NavBarProps {
+  toggle: () => void;
+}
+
+const Navbar = ({ toggle }: NavBarProps) => {
   return (
     <AppShell.Navbar p="md">
-      Navbar
-      {Array(15)
-        .fill(0)
-        .map((_, index) => (
-          <Skeleton key={index} h={28} mt="sm" animate={false} />
-        ))}
+      <Stack>
+        <NavLink onClick={toggle} to="/">
+          Home
+        </NavLink>
+        <NavLink onClick={toggle} to="/buy">
+          MarketPlace
+        </NavLink>
+        <NavLink onClick={toggle} to="/profile">
+          Profile
+        </NavLink>
+      </Stack>
     </AppShell.Navbar>
   );
 };

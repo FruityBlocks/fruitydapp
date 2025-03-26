@@ -1,7 +1,8 @@
-import { AppShell, Skeleton } from "@mantine/core";
+import { AppShell } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Header from "./Header";
 import Navbar from "./Navbar";
+import AppRoutes from "../routes/Routes";
 
 const Layout = () => {
   const [opened, { toggle }] = useDisclosure();
@@ -16,8 +17,10 @@ const Layout = () => {
       padding="md"
     >
       <Header opened={opened} toggle={toggle} />
-      <Navbar />
-      <AppShell.Main>Main</AppShell.Main>
+      <Navbar toggle={toggle} />
+      <AppShell.Main>
+        <AppRoutes />
+      </AppShell.Main>
     </AppShell>
   );
 };
