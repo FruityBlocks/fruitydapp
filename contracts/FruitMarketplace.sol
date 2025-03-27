@@ -13,20 +13,20 @@ contract FruitMarketplace {
 
     event FruitAdded(string name, uint price, address indexed owner);
 
-    function addFruit(string memory name, uint price) public {
-        require(bytes(name).length > 0, "Le nom du fruit ne peut pas être vide");
-        require(price > 0, "Le prix doit être supérieur à 0");
+    function addFruit(string memory name, string memory typeOfFruit, uint price, string memory seller) public {
+        require(bytes(name).length > 0, "Fruit name should not be empty");
+        require(price > 0, "The price must be greater than 0");
 
-        fruits.push(Fruit(_name, price, msg.sender));
+        fruits.push(Fruit(name, typeOfFruit, price, seller));
 
         emit FruitAdded(name, price, msg.sender);
     }
 
-    function getFruit(uint index) public view returns (string memory, uint, address) {
+    function getFruit(uint index) public view returns (string memory, string memory, uint, string memory) {
         require(index < fruits.length, "Fruit inexistant");
 
-        Fruit memory fruit = fruits[_index];
-        return (fruit.name, fruit.price, fruit.owner);
+        Fruit memory fruit = fruits[index];
+        return (fruit.name, fruit.typeOfFruit, fruit.price, fruit.seller);
     }
 
     function getFruitsCount() public view returns (uint) {
