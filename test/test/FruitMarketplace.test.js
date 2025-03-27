@@ -8,6 +8,6 @@ contract("FruitMarketplace", (accounts) => {
     });
 
     it("doit être déployé avec une adresse valide", async () => {
-        assert.notEqual(contractInstance.address, 0x0, "L'adresse du contrat ne doit pas être 0x0");
+        assert.notEqual(contractInstance.address, 0x0, "Address should not be 0x0");
     });
 });
