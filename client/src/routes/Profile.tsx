@@ -1,5 +1,5 @@
 import { Box, Title } from "@mantine/core";
-import { evals } from "../tempData";
+import { evals } from "../models/Eval";
 import GridEvaluations from "../components/profile/GridEvaluations";
 import MyFruits from "../components/profile/MyFruits";
 import { useWeb3 } from "../providers/Web3Provider";
