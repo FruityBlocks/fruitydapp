@@ -7,7 +7,7 @@ contract("FruitMarketplace", (accounts) => {
         contractInstance = await FruitMarketplace.deployed();
     });
 
-    it("doit être déployé avec une adresse valide", async () => {
+    it("should be deployed", async () => {
         assert.notEqual(contractInstance.address, 0x0, "Address should not be 0x0");
     });
 });
