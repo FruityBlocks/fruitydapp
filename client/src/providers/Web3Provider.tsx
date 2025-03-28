@@ -64,8 +64,8 @@ export const Web3Provider = ({ children }: Web3ProviderProps) => {
 
       const deployedNetwork = (FruitMarketplace.networks as any)[networkId];
       if (deployedNetwork) {
-        const contractInstance = new web3Instance.eth.Contract(FruitMarketplace.abi, deployedNetwork.address);
-        setContract(contractInstance);
+        const fruitMarketplaceContract = new web3Instance.eth.Contract(FruitMarketplace.abi, deployedNetwork.address);
+        setContract(fruitMarketplaceContract);
       } 
       else {
         notifications.show({
