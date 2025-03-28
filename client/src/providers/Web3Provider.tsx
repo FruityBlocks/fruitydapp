@@ -1,5 +1,6 @@
 import { ReactNode, createContext, useContext, useState } from "react";
 import Web3 from "web3";
+import FruitMarketplace from "../../../build/contracts/FruitMarketplace.json";
 import { notifications } from "@mantine/notifications";
 
 interface Web3ContextType {
@@ -53,27 +54,30 @@ export const Web3Provider = ({ children }: Web3ProviderProps) => {
 
     try {
       setIsConnecting(true);
-
       const web3Instance = new Web3(window.ethereum);
+      const accounts: string[] = await window.ethereum.request({ method: "eth_requestAccounts" });
+      const networkId: string = await window.ethereum.request({ method: "net_version" });
+
       setWeb3(web3Instance);
-
-      const accounts: string[] = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
       setAccount(accounts[0]);
-
-      const networkId: string = await window.ethereum.request({
-        method: "net_version",
-      });
       setNetwork(networkId);
 
-      window.ethereum.on("accountsChanged", (newAccounts: string[]) => {
-        setAccount(newAccounts[0] || null);
-      });
+      const deployedNetwork = (FruitMarketplace.networks as any)[networkId];
+      if (deployedNetwork) {
+        const contractInstance = new web3Instance.eth.Contract(FruitMarketplace.abi, deployedNetwork.address);
+        setContract(contractInstance);
+      } 
+      else {
+        notifications.show({
+          title: "Erreur",
+          message: "The contract could not be deployed",
+          color: "red",
+        });
+      }
 
-      window.ethereum.on("chainChanged", (newNetworkId: string) => {
-        setNetwork(newNetworkId);
-      });
+      window.ethereum.on("accountsChanged", (newAccounts: string[]) => setAccount(newAccounts[0] || null));
+      window.ethereum.on("chainChanged", (newNetworkId: string) => setNetwork(newNetworkId));
+      
     } catch (error: any) {
       switch (error.code) {
         case -32002:

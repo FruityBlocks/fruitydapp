@@ -16,7 +16,7 @@ contract FruitMarketplace {
     function addFruit(string memory name, string memory typeOfFruit, uint price, string memory seller) public {
         require(bytes(name).length > 0, "Fruit name should not be empty");
         require(price > 0, "The price must be greater than 0");
-
+ 
         fruits.push(Fruit(name, typeOfFruit, price, seller));
 
         emit FruitAdded(name, price, msg.sender);
