@@ -1,15 +1,15 @@
-// This will need to change since were not using Truffle anymore!
+const { expect } = require("chai");
+const { ethers } = require("hardhat");
 
-// const FruitMarketplace = artifacts.require("FruitMarketplace");
+describe("FruitMarketplace", () => {
+   let fruitContract;
 
-// contract("FruitMarketplace", (accounts) => {
-//   let contractInstance;
+   before(async () => {
+        fruitContract = (await ethers.getContractFactory("FruitMarketplace")).deploy("Test");
+   });
 
-//   before(async () => {
-//     contractInstance = await FruitMarketplace.deployed();
-//   });
-
-//   it("should be deployed", async () => {
-//     assert.notEqual(contractInstance.address, 0x0, "Address should not be 0x0");
-//   });
-// });
+   it("should be deployed", async () => {
+        expect(greeter.target).to.not.equal(0);
+        expect(await greeter.greet()).to.equal("Test");
+   });
+});
