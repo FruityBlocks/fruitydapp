@@ -29,7 +29,7 @@ const MarketPlaceGrid = () => {
           name: fruit[0],
           icon: IconLemon,
           type: fruit[1],
-          price: Number(Web3.utils.fromWei(fruit[2], "ether")), // Conversion de Wei vers ETH
+          price: Number(Web3.utils.fromWei(fruit[2], "ether")),
           seller: fruit[3]
         });
       }
