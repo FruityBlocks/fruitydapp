@@ -1,32 +1,16 @@
-import { ReactNode, createContext, useContext, useState } from "react";
+import { ReactNode, createContext, useState } from "react";
 import Web3 from "web3";
 import FruitMarketplace from "../../../build/contracts/FruitMarketplace.json";
 import { notifications } from "@mantine/notifications";
-
-interface Web3ContextType {
-  web3: Web3 | null;
-  account: string | null;
-  network: string | null;
-  contract: any;
-  connectWallet: () => Promise<void>;
-  isConnecting: boolean;
-}
+import { Web3ContextType } from "../models/interfaces";
 
 const Web3Context = createContext<Web3ContextType | undefined>(undefined);
-
-export const useWeb3 = (): Web3ContextType => {
-  const context = useContext(Web3Context);
-  if (!context) {
-    throw new Error("useWeb3 must be used within a Web3Provider");
-  }
-  return context;
-};
 
 interface Web3ProviderProps {
   children: ReactNode;
 }
 
-export const Web3Provider = ({ children }: Web3ProviderProps) => {
+const Web3Provider = ({ children }: Web3ProviderProps) => {
   const [web3, setWeb3] = useState<Web3 | null>(null);
   const [account, setAccount] = useState<string | null>(null);
   const [network, setNetwork] = useState<string | null>(null);
@@ -55,8 +39,12 @@ export const Web3Provider = ({ children }: Web3ProviderProps) => {
     try {
       setIsConnecting(true);
       const web3Instance = new Web3(window.ethereum);
-      const accounts: string[] = await window.ethereum.request({ method: "eth_requestAccounts" });
-      const networkId: string = await window.ethereum.request({ method: "net_version" });
+      const accounts: string[] = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      const networkId: string = await window.ethereum.request({
+        method: "net_version",
+      });
 
       setWeb3(web3Instance);
       setAccount(accounts[0]);
@@ -64,10 +52,14 @@ export const Web3Provider = ({ children }: Web3ProviderProps) => {
 
       const deployedNetwork = (FruitMarketplace.networks as any)[networkId];
       if (deployedNetwork) {
-        const fruitMarketplaceContract = new web3Instance.eth.Contract(FruitMarketplace.abi, deployedNetwork.address);
+        const fruitMarketplaceContract = new web3Instance.eth.Contract(
+          FruitMarketplace.abi,
+          deployedNetwork.address
+        );
+        console.log(deployedNetwork);
+        console.log(fruitMarketplaceContract);
         setContract(fruitMarketplaceContract);
-      } 
-      else {
+      } else {
         notifications.show({
           title: "Erreur",
           message: "The contract could not be deployed",
@@ -75,9 +67,12 @@ export const Web3Provider = ({ children }: Web3ProviderProps) => {
         });
       }
 
-      window.ethereum.on("accountsChanged", (newAccounts: string[]) => setAccount(newAccounts[0] || null));
-      window.ethereum.on("chainChanged", (newNetworkId: string) => setNetwork(newNetworkId));
-      
+      window.ethereum.on("accountsChanged", (newAccounts: string[]) =>
+        setAccount(newAccounts[0] || null)
+      );
+      window.ethereum.on("chainChanged", (newNetworkId: string) =>
+        setNetwork(newNetworkId)
+      );
     } catch (error: any) {
       switch (error.code) {
         case -32002:
@@ -118,3 +113,5 @@ export const Web3Provider = ({ children }: Web3ProviderProps) => {
     </Web3Context.Provider>
   );
 };
+
+export { Web3Provider, Web3Context };

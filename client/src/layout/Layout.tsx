@@ -3,7 +3,7 @@ import { useDisclosure } from "@mantine/hooks";
 import Header from "./Header";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { useWeb3 } from "../providers/Web3Provider";
+import useWeb3 from "../hooks/useWeb3";
 import { Navigate, Outlet } from "react-router";
 
 const Layout = () => {

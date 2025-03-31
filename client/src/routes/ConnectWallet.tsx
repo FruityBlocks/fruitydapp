@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router";
-import { useWeb3 } from "../providers/Web3Provider";
+import useWeb3 from "../hooks/useWeb3";
 import { Button, Title, Flex, Container, Image } from "@mantine/core";
 import { useEffect } from "react";
 

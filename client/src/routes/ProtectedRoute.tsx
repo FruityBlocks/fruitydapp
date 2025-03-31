@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from "react-router";
-import { useWeb3 } from "../providers/Web3Provider";
+import useWeb3 from "../hooks/useWeb3";
 import { ReactNode } from "react";
 
 interface ProtectedRouteProps {

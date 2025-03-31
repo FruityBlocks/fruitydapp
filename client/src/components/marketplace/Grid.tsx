@@ -1,6 +1,6 @@
 import { SimpleGrid } from "@mantine/core";
 import CardFruit from "./CardFruit";
-import { useWeb3 } from "../../providers/Web3Provider";
+import useWeb3 from "../../hooks/useWeb3";
 import { Fruit } from "../../models/Fruit";
 import { useEffect, useState } from "react";
 import Web3 from "web3";
