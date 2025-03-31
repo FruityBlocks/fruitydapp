@@ -1,0 +1,27 @@
+{
+  "name": "fruity-dapp",
+  "version": "1.0.0",
+  "description": "``` 1. Clone the repo 2. cd into /client 3. Run : npm install 4. Run : npm run dev 5. Go to http://localhost:3000/ 6. Connect to the App with a valid MetaMask user Account! 7. Enjoy! ```",
+  "homepage": "https://github.com/FruityBlocks/fruitydapp#readme",
+  "bugs": {
+    "url": "https://github.com/FruityBlocks/fruitydapp/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FruityBlocks/fruitydapp.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "hardhat": "^2.22.19"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ignition-ethers": "^0.15.10",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0"
+  }
+}

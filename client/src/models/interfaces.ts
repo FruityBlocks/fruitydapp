@@ -1,10 +1,11 @@
-import Web3 from "web3";
+import { BrowserProvider, JsonRpcSigner, Contract } from "ethers";
 
 export interface Web3ContextType {
-  web3: Web3 | null;
+  provider: BrowserProvider | null;
+  signer: JsonRpcSigner | null;
   account: string | null;
   network: string | null;
-  contract: any;
+  contract: Contract | null;
   connectWallet: () => Promise<void>;
   isConnecting: boolean;
 }
