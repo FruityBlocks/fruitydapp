@@ -9,16 +9,28 @@ import { IconLemon } from "@tabler/icons-react";
 const MarketPlaceGrid = () => {
   const { contract } = useWeb3();
   const [fruits, setFruits] = useState<Fruit[]>([]);
+  const [status, setStatus] = useState<string>("");
 
   useEffect(() => {
     if (contract) {
-      loadFruits();
+      //loadFruits();
+      loadStatus();
     }
   }, [contract]);
 
+  const loadStatus = async () => {
+    if (!contract) return;
+    try {
+      const contractStatus = await contract.status();
+      setStatus(contractStatus);
+    } catch (error: any) {
+      console.error("Error loading status", error);
+    }
+  };
+
   const loadFruits = async () => {
     if (!contract) return;
-    
+
     try {
       const fruitsCount = await contract.methods.getFruitsCount().call();
       let fruitsArray: Fruit[] = [];
@@ -30,7 +42,7 @@ const MarketPlaceGrid = () => {
           icon: IconLemon,
           type: fruit[1],
           price: Number(Web3.utils.fromWei(fruit[2], "ether")),
-          seller: fruit[3]
+          seller: fruit[3],
         });
       }
 
@@ -41,11 +53,14 @@ const MarketPlaceGrid = () => {
   };
 
   return (
-    <SimpleGrid mb={50} mt={50} cols={{ base: 1, sm: 3, lg: 3 }} spacing="lg">
-      {fruits.map((item, index) => (
-        <CardFruit key={index} item={item} />
-      ))}
-    </SimpleGrid>
+    <>
+      <SimpleGrid mb={50} mt={50} cols={{ base: 1, sm: 3, lg: 3 }} spacing="lg">
+        {fruits.map((item, index) => (
+          <CardFruit key={index} item={item} />
+        ))}
+      </SimpleGrid>
+      <div>Status : {status}</div>
+    </>
   );
 };
 

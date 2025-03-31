@@ -1,23 +1,31 @@
-import { ReactNode, createContext, useState } from "react";
-import Web3 from "web3";
-import FruitMarketplace from "../../../build/contracts/FruitMarketplace.json";
+import { ReactNode, createContext, useState, useCallback } from "react";
+import { ethers } from "ethers";
 import { notifications } from "@mantine/notifications";
+import Rocket from "../../../artifacts/contracts/Rocket.sol/Rocket.json";
 import { Web3ContextType } from "../models/interfaces";
 
 const Web3Context = createContext<Web3ContextType | undefined>(undefined);
+
+const DEPLOYED_ADDRESS = import.meta.env.VITE_DEPLOYED_ADDRESS;
+if (!DEPLOYED_ADDRESS) {
+  throw new Error(
+    "DEPLOYED_ADDRESS is not defined in the environment variables."
+  );
+}
 
 interface Web3ProviderProps {
   children: ReactNode;
 }
 
 const Web3Provider = ({ children }: Web3ProviderProps) => {
-  const [web3, setWeb3] = useState<Web3 | null>(null);
+  const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
+  const [signer, setSigner] = useState<ethers.JsonRpcSigner | null>(null);
   const [account, setAccount] = useState<string | null>(null);
   const [network, setNetwork] = useState<string | null>(null);
-  const [contract, setContract] = useState<any>(null);
+  const [contract, setContract] = useState<ethers.Contract | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
 
-  const connectWallet = async () => {
+  const connectWallet = useCallback(async () => {
     if (isConnecting) {
       notifications.show({
         title: "Connection in Progress",
@@ -38,76 +46,75 @@ const Web3Provider = ({ children }: Web3ProviderProps) => {
 
     try {
       setIsConnecting(true);
-      const web3Instance = new Web3(window.ethereum);
-      const accounts: string[] = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      const networkId: string = await window.ethereum.request({
-        method: "net_version",
-      });
+      const newProvider = new ethers.BrowserProvider(window.ethereum);
+      await newProvider.send("eth_requestAccounts", []);
 
-      setWeb3(web3Instance);
-      setAccount(accounts[0]);
-      setNetwork(networkId);
+      const newSigner = await newProvider.getSigner();
+      const newAccount = await newSigner.getAddress();
+      const networkData = await newProvider.getNetwork();
+      const chainId = networkData.chainId.toString();
+      console.log(newSigner);
+      console.log(newAccount);
+      console.log(networkData);
+      console.log(chainId);
 
-      const deployedNetwork = (FruitMarketplace.networks as any)[networkId];
-      if (deployedNetwork) {
-        const fruitMarketplaceContract = new web3Instance.eth.Contract(
-          FruitMarketplace.abi,
-          deployedNetwork.address
-        );
-        console.log(deployedNetwork);
-        console.log(fruitMarketplaceContract);
-        setContract(fruitMarketplaceContract);
-      } else {
-        notifications.show({
-          title: "Erreur",
-          message: "The contract could not be deployed",
-          color: "red",
-        });
-      }
+      setProvider(newProvider);
+      setSigner(newSigner);
+      setAccount(newAccount);
+      setNetwork(chainId);
 
-      window.ethereum.on("accountsChanged", (newAccounts: string[]) =>
-        setAccount(newAccounts[0] || null)
+      const rocketContract = new ethers.Contract(
+        DEPLOYED_ADDRESS,
+        Rocket.abi,
+        newSigner
       );
-      window.ethereum.on("chainChanged", (newNetworkId: string) =>
-        setNetwork(newNetworkId)
-      );
+      console.log(rocketContract);
+      setContract(rocketContract);
+
+      window.ethereum.on("accountsChanged", (accounts: string[]) => {
+        setAccount(accounts.length ? accounts[0] : null);
+      });
+
+      window.ethereum.on("chainChanged", (newChainId: string) => {
+        setNetwork(parseInt(newChainId, 16).toString()); // Convert from hex
+      });
     } catch (error: any) {
-      switch (error.code) {
-        case -32002:
-          notifications.show({
-            title: "Connection Pending",
-            message:
-              "A wallet connection request is already in progress. Please check your MetaMask extension.",
-            color: "yellow",
-          });
-          break;
-        case 4001:
-          notifications.show({
-            title: "Connection Rejected",
-            message: "You declined the wallet connection. Please try again.",
-            color: "red",
-          });
-          break;
-        default:
-          notifications.show({
-            title: "Connection Error",
-            message:
-              error.message || "Failed to connect wallet. Please try again.",
-            color: "red",
-          });
-      }
-      setWeb3(null);
+      const errorMessages: Record<number, string> = {
+        "-32002":
+          "A wallet connection request is already in progress. Please check your MetaMask extension.",
+        "4001": "You declined the wallet connection. Please try again.",
+      };
+
+      notifications.show({
+        title: "Connection Error",
+        message:
+          errorMessages[error.code] ||
+          error.message ||
+          "Failed to connect wallet. Please try again.",
+        color: "red",
+      });
+
+      setProvider(null);
+      setSigner(null);
       setAccount(null);
       setNetwork(null);
+      setContract(null);
     } finally {
       setIsConnecting(false);
     }
-  };
+  }, [isConnecting]);
+
   return (
     <Web3Context.Provider
-      value={{ web3, account, network, contract, connectWallet, isConnecting }}
+      value={{
+        provider,
+        signer,
+        account,
+        network,
+        contract,
+        connectWallet,
+        isConnecting,
+      }}
     >
       {children}
     </Web3Context.Provider>
