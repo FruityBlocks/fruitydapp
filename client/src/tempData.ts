@@ -1,33 +1,5 @@
-import { Icon, IconApple, IconLemon } from "@tabler/icons-react";
-
-export type Fruit = {
-  name: string;
-  icon: Icon;
-  type: string;
-  price: number;
-  seller: string;
-};
-
-export type Eval = {
-  rating: number;
-  comment: string;
-};
-
-export const evals: Eval[] = [
-  {
-    rating: 3,
-    comment: "ok",
-  },
-  {
-    rating: 5,
-    comment: "nice",
-  },
-  {
-    rating: 2,
-    comment: "boofff",
-  },
-];
-
+import { IconApple, IconLemon } from "@tabler/icons-react";
+import { Fruit } from "./models/Fruit";
 
 const tempData: Fruit[] = [
   {

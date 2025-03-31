@@ -17,6 +17,7 @@
     "@mantine/notifications": "^7.17.2",
     "@tabler/icons-react": "^3.31.0",
     "chroma-js": "^3.1.2",
+    "ganache": "^7.9.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router": "^7.4.0",
@@ -24,7 +25,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
-    "@types/react": "^19.0.10",
+    "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.21.0",
