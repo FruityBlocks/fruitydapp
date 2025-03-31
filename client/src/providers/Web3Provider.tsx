@@ -1,7 +1,6 @@
 import { ReactNode, createContext, useState, useCallback } from "react";
 import { ethers } from "ethers";
 import { notifications } from "@mantine/notifications";
-import Rocket from "../../../artifacts/contracts/Rocket.sol/Rocket.json";
 import FruitMarketplace from "../../../artifacts/contracts/FruitMarketPlace.sol/FruitMarketplace.json";
 import { Web3ContextType } from "../models/interfaces";
 

@@ -1,13 +1,15 @@
-const FruitMarketplace = artifacts.require("FruitMarketplace");
+// This will need to change since were not using Truffle anymore!
 
-contract("FruitMarketplace", (accounts) => {
-  let contractInstance;
+// const FruitMarketplace = artifacts.require("FruitMarketplace");
 
-  before(async () => {
-    contractInstance = await FruitMarketplace.deployed();
-  });
+// contract("FruitMarketplace", (accounts) => {
+//   let contractInstance;
 
-  it("should be deployed", async () => {
-    assert.notEqual(contractInstance.address, 0x0, "Address should not be 0x0");
-  });
-});
+//   before(async () => {
+//     contractInstance = await FruitMarketplace.deployed();
+//   });
+
+//   it("should be deployed", async () => {
+//     assert.notEqual(contractInstance.address, 0x0, "Address should not be 0x0");
+//   });
+// });
