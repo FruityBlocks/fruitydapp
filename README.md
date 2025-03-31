@@ -10,23 +10,28 @@ A Marketplace to buy and sell NFTs on the Ethereum network!
 
 ### Setup Instructions
 
-1. **Start your local Hardhat node**
+1. **Install backend dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Start your local Hardhat node**
    ```bash
    npx hardhat node --port 8544
    ```
    > **Important**: You must specify port 8544
 
-2. **Compile the smart contracts**
+3. **Compile the smart contracts**
    ```bash
    npx hardhat compile
    ```
 
-3. **Deploy the contract**
+4. **Deploy the contract**
    ```bash
    npx hardhat ignition deploy ignition/modules/<BUILD_FILE>.js --network localhost
    ```
 
-4. **Save the deployed contract address**
+5. **Save the deployed contract address**
    - Copy the deployed contract address from the terminal output
    - You'll need this for the frontend configuration
 
