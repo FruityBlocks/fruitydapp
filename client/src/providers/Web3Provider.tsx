@@ -2,6 +2,7 @@ import { ReactNode, createContext, useState, useCallback } from "react";
 import { ethers } from "ethers";
 import { notifications } from "@mantine/notifications";
 import Rocket from "../../../artifacts/contracts/Rocket.sol/Rocket.json";
+import FruitMarketplace from "../../../artifacts/contracts/FruitMarketPlace.sol/FruitMarketplace.json";
 import { Web3ContextType } from "../models/interfaces";
 
 const Web3Context = createContext<Web3ContextType | undefined>(undefined);
@@ -12,6 +13,7 @@ if (!DEPLOYED_ADDRESS) {
     "DEPLOYED_ADDRESS is not defined in the environment variables."
   );
 }
+const ABI = FruitMarketplace.abi;
 
 interface Web3ProviderProps {
   children: ReactNode;
@@ -65,7 +67,7 @@ const Web3Provider = ({ children }: Web3ProviderProps) => {
 
       const rocketContract = new ethers.Contract(
         DEPLOYED_ADDRESS,
-        Rocket.abi,
+        ABI,
         newSigner
       );
       console.log(rocketContract);
@@ -76,7 +78,7 @@ const Web3Provider = ({ children }: Web3ProviderProps) => {
       });
 
       window.ethereum.on("chainChanged", (newChainId: string) => {
-        setNetwork(parseInt(newChainId, 16).toString()); // Convert from hex
+        setNetwork(parseInt(newChainId, 16).toString());
       });
     } catch (error: any) {
       const errorMessages: Record<number, string> = {
