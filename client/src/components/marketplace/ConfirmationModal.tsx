@@ -1,5 +1,5 @@
 import { Modal, Stack, Text, Title, Rating, Textarea } from "@mantine/core";
-import { Fruit } from "../../tempData";
+import { Fruit } from "../../models/Fruit";
 import { IconCurrencyEthereum } from "@tabler/icons-react";
 import ButtonGroup from "../ButtonGroup";
 import { ModalType } from "../../utils/enums";
@@ -10,7 +10,7 @@ interface ConfirmationModalProps {
   opened: boolean;
   close: () => void;
   type: ModalType;
-  item: Fruit;
+  fruit: Fruit;
 }
 
 interface FormValuesRate {
@@ -21,7 +21,7 @@ interface FormValuesRate {
 const ConfirmationModal = ({
   opened,
   close,
-  item,
+  fruit,
   type,
 }: ConfirmationModalProps) => {
   const form = useForm({
@@ -46,8 +46,8 @@ const ConfirmationModal = ({
       <Title size="lg" c="fruity-orange">
         {type === ModalType.BUY ? (
           <>
-            You are about to buy {item.name} for{" "}
-            <IconCurrencyEthereum size={20} /> {item.price}
+            You are about to buy {fruit.name} for{" "}
+            <IconCurrencyEthereum size={20} /> {fruit.price}
           </>
         ) : (
           "Rate the buyer"
@@ -56,7 +56,7 @@ const ConfirmationModal = ({
 
       <Stack mt="lg">
         <Text size="md">
-          Seller: {item.seller.slice(0, 6)}...{item.seller.slice(-4)}
+          Seller: {fruit.seller.slice(0, 6)}...{fruit.seller.slice(-4)}
         </Text>
 
         {type === ModalType.RATE && (

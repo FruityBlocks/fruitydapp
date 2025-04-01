@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
+import { Web3 } from "web3";
 import useWeb3 from "./useWeb3";
-import Web3 from "web3";
 import { Fruit } from "../models/Fruit";
 
 const useGetFruits = () => {

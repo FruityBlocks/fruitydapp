@@ -6,17 +6,17 @@ import { IconCurrencyEthereum } from "@tabler/icons-react";
 import { ModalType } from "../../utils/enums";
 
 interface CardFruitProps {
-  item: Fruit;
+  fruit: Fruit;
 }
 
-const CardFruit = ({ item }: CardFruitProps) => {
+const CardFruit = ({ fruit }: CardFruitProps) => {
   const [opened, { open, close }] = useDisclosure(false);
-
+  console.log(fruit);
   return (
     <>
       <Card
         onClick={open}
-        key={item.seller}
+        key={fruit.seller}
         shadow="sm"
         padding="lg"
         radius="md"
@@ -34,21 +34,21 @@ const CardFruit = ({ item }: CardFruitProps) => {
                 fontWeight: 600,
               }}
             >
-              {item.name}
+              {fruit.name}
             </Text>
           </Group>
           <Text size="xl" c="green">
             <IconCurrencyEthereum size={17} />
-            {item.price}
+            {fruit.price}
           </Text>
           <Badge color="fruity-orange.2" variant="light">
-            Seller: {item.seller.slice(0, 6)}...{item.seller.slice(-4)}
+            Seller: {fruit.seller.slice(0, 6)}...{fruit.seller.slice(-4)}
           </Badge>
         </Stack>
       </Card>
       <ConfirmationModal
         type={ModalType.BUY}
-        item={item}
+        fruit={fruit}
         opened={opened}
         close={close}
       />

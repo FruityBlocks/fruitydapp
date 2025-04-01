@@ -10,7 +10,7 @@ const MarketPlaceGrid = () => {
   return (
     <SimpleGrid mb={50} mt={50} cols={{ base: 1, sm: 3, lg: 3 }} spacing="lg">
       {fruits.map((item, index) => (
-        <CardFruit key={index} item={item} />
+        <CardFruit key={index} fruit={item} />
       ))}
     </SimpleGrid>
   );
