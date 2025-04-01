@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import useWeb3 from "./useWeb3";
-import { IconLemon } from "@tabler/icons-react";
 import Web3 from "web3";
 import { Fruit } from "../models/Fruit";
 
@@ -24,10 +23,8 @@ const useGetFruits = () => {
         const fruit = await contract.getFruit(i);
         fruitsArray.push({
           name: fruit[0],
-          icon: IconLemon,
-          type: fruit[1],
-          price: Number(Web3.utils.fromWei(fruit[2], "ether")),
-          seller: fruit[3],
+          price: Number(Web3.utils.fromWei(fruit[1], "ether")),
+          seller: fruit[2],
         });
       }
 

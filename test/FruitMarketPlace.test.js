@@ -1,16 +1,11 @@
-import { expect } from "chai";
-import { ethers } from "hardhat";
-
+const { deployContract } = require("ethers");
+const { expect } = require("chai");
+const { FruitMarketplaceArtifact } = require("../artifacts/contracts/FruitMarketplace.sol/FruitMarketplace.json");
 describe("FruitMarketplace", () => {
-   let fruitContract;
-
-   before(async () => {
-        fruitContract = (await ethers.getContractFactory("FruitMarketplace")).deploy("Test");
-        (await fruitContract).waitForDeployment()
-    });
-
-   it("should be deployed", async () => {
-        expect(greeter.target).to.not.equal(0);
-        expect(await greeter.greet()).to.equal("Test");
-   });
+     let fruitContract;
+     
+     it("should be deployed", async function () {
+          fruitContract = await ethers.deployContract("FruitMarketplace");
+          expect(await fruitContract.getAddress()).to.not.equal(ethers.ZeroAddress);
+     });
 });
