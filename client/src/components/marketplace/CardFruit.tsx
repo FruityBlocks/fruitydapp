@@ -1,5 +1,5 @@
 import { Badge, Card, Group, Stack, Text } from "@mantine/core";
-import { Fruit } from "../../tempData";
+import { Fruit } from "../../models/Fruit";
 import { useDisclosure } from "@mantine/hooks";
 import ConfirmationModal from "./ConfirmationModal";
 import { IconCurrencyEthereum } from "@tabler/icons-react";
@@ -37,10 +37,6 @@ const CardFruit = ({ item }: CardFruitProps) => {
               {item.name}
             </Text>
           </Group>
-          <item.icon size={32} />
-          <Text size="sm" c="dimmed">
-            Type: {item.type}
-          </Text>
           <Text size="xl" c="green">
             <IconCurrencyEthereum size={17} />
             {item.price}
