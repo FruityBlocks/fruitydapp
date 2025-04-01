@@ -34,13 +34,10 @@ const SellForm = () => {
 
     try {
       const priceInWei = ethers.parseUnits(values.price, "ether");
-
       const tx = await contract.addFruit(
         values.fruitName,
-        "Fruit",
         priceInWei,
         account,
-        "Lemonish"
       );
 
       await tx.wait();
