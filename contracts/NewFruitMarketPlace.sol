@@ -3,6 +3,12 @@ pragma solidity ^0.8.0;
 
 contract NewFruitMarketPlace {
 
+    string constant ERROR_USER_NOT_REGISTERED = "User is not registered, you are not allowed to do this action.";
+    string constant ERROR_FRUIT_DOES_NOT_EXIST = "The fruit does not exist";
+    string constant ERROR_FRUIT_ALREADY_EXISTS = "Fruit already exists.";
+    string constant ERROR_NOT_FRUIT_OWNER = "You are not the owner of this fruit";
+    string constant ERROR_FRUIT_NOT_FOR_SALE = "This fruit is not for sale!";
+
     struct Fruit {
         uint256 id;
         string name;
@@ -42,6 +48,27 @@ contract NewFruitMarketPlace {
         return users[msg.sender].isRegistered;
     }
 
+    function fruitExists(uint256 _fruitId) private view returns (bool) {
+        if (fruitIdToIndex[_fruitId] < fruits.length) {
+            uint256 index = fruitIdToIndex[_fruitId];
+            if (fruits[index].id == _fruitId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function verifyOwnership(uint256 _index) private view returns (bool){
+        return fruits[_index].owner == msg.sender;
+    }
+
+    function getIndex(uint256 _fruitId) private view returns (uint256){
+        return fruitIdToIndex[_fruitId];
+    }
+
+    function isForSale(uint256 _index) private view returns (bool){
+        return fruits[_index].forSale == true;
+    }
 
     function createUser() public {
         if (!users[msg.sender].isRegistered){
@@ -51,8 +78,8 @@ contract NewFruitMarketPlace {
     }
 
     function addFruit(string memory _name, uint256 _price) public {
-        require(isRegistered(), "User is not registered, you are not allowed to do this action.");
-        require(!fruitNameExists[_name], "Fruit already exists.");
+        require(isRegistered(), ERROR_USER_NOT_REGISTERED);
+        require(!fruitNameExists[_name], ERROR_FRUIT_ALREADY_EXISTS);
 
         uint256 fruitId = nextFruitId++;
         fruitNameExists[_name] = true;
@@ -69,9 +96,9 @@ contract NewFruitMarketPlace {
     }
 
     function sellFruit(uint256 _fruitId, uint256 _price) public {
-        require(fruitIdToIndex[_fruitId] < fruits.length, "The fruit does not exist");
-        uint256 index = fruitIdToIndex[_fruitId];
-        require(fruits[index].owner == msg.sender, "You are not the owner of this fruit");
+        require(fruitExists(_fruitId), ERROR_FRUIT_DOES_NOT_EXIST);
+        uint256 index = getIndex(_fruitId);
+        require(verifyOwnership(index), ERROR_NOT_FRUIT_OWNER);
 
         fruits[index].forSale = true;
         fruits[index].price = _price;
@@ -79,19 +106,20 @@ contract NewFruitMarketPlace {
     }
 
     function getUserFruits() public view returns (uint256[] memory) {
-        require(isRegistered(), "User is not registered, you are not allowed to do this action.");
+        require(isRegistered(), ERROR_USER_NOT_REGISTERED);
         return userFruits[msg.sender];
     }
 
     function getUserFruit(uint256 _fruitId) public view returns (Fruit memory){
-        require(isRegistered(), "User is not registered, you are not allowed to do this action.");
+        require(isRegistered(), ERROR_USER_NOT_REGISTERED);
+        require(fruitExists(_fruitId), ERROR_FRUIT_DOES_NOT_EXIST);
         uint256 index = fruitIdToIndex[_fruitId];
-        require(fruits[index].owner == msg.sender, "You are not the owner of this fruit");
+        require(verifyOwnership(index), ERROR_NOT_FRUIT_OWNER);
         return fruits[index];
     }
 
     function getFruitsForSale() public view returns (uint256[] memory) {
-        require(isRegistered(), "User is not registered, you are not allowed to do this action.");
+        require(isRegistered(), ERROR_USER_NOT_REGISTERED);
         uint256 count = 0;
         for (uint256 i = 0; i < fruits.length; i++) {
             if (fruits[i].forSale) {
@@ -110,9 +138,10 @@ contract NewFruitMarketPlace {
     }
 
     function getFruitForSale(uint256 _fruitId) public view returns (Fruit memory){
-        require(isRegistered(), "User is not registered, you are not allowed to do this action.");
+        require(isRegistered(), ERROR_USER_NOT_REGISTERED);
+        require(fruitExists(_fruitId), ERROR_FRUIT_DOES_NOT_EXIST);
         uint256 index = fruitIdToIndex[_fruitId];
-        require(fruits[index].forSale == true, "This fruit is not for sale!");
+        require(isForSale(index), ERROR_FRUIT_NOT_FOR_SALE);
         return fruits[index];
     }
 

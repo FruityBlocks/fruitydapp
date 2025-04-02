@@ -1,5 +1,9 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+const errorMessages = require("./Errors");
+("./Errors");
+const emits = require("./Emits");
+const strings = require("./Strings");
 
 const FRUIT_NAME = "BANANA";
 const DEFAULT_PRICE = ethers.parseEther("1");
@@ -11,7 +15,7 @@ describe("NewFruitMarketPlace", () => {
 
   beforeEach(async () => {
     [owner, buyer, random] = await ethers.getSigners();
-    const FruitMarket = await ethers.getContractFactory("NewFruitMarketPlace");
+    const FruitMarket = await ethers.getContractFactory(strings.CONTRACT_NAME);
     fruitContract = await FruitMarket.deploy();
     await fruitContract.waitForDeployment();
     await fruitContract.connect(owner).createUser();
@@ -39,35 +43,33 @@ describe("NewFruitMarketPlace", () => {
     await fruitContract.addFruit(FRUIT_NAME, DEFAULT_PRICE);
     await expect(
       fruitContract.addFruit(FRUIT_NAME, DEFAULT_PRICE)
-    ).to.be.revertedWith("Fruit already exists.");
+    ).to.be.revertedWith(errorMessages.ERROR_FRUIT_ALREADY_EXISTS);
   });
 
   it("givenAddFruitRequest_whenUserNotRegistered_shouldRevertWithError", async () => {
     await expect(
       fruitContract.connect(random).addFruit(FRUIT_NAME, DEFAULT_PRICE)
-    ).to.be.revertedWith(
-      "User is not registered, you are not allowed to do this action."
-    );
+    ).to.be.revertedWith(errorMessages.ERROR_USER_NOT_REGISTERED);
   });
 
   it("givenSellFruitRequest_whenFruitDoesNotExist_shouldRevertWithError", async () => {
     await expect(
       fruitContract.sellFruit(ZERO_INDEX, DEFAULT_PRICE)
-    ).to.be.revertedWith("The fruit does not exist");
+    ).to.be.revertedWith(errorMessages.ERROR_FRUIT_DOES_NOT_EXIST);
   });
 
   it("givenSellFruitRequest_whenNotOwner_shouldRevertWithError", async () => {
     await fruitContract.addFruit(FRUIT_NAME, DEFAULT_PRICE);
     await expect(
       fruitContract.connect(buyer).sellFruit(ZERO_INDEX, DEFAULT_PRICE)
-    ).to.be.revertedWith("You are not the owner of this fruit");
+    ).to.be.revertedWith(errorMessages.ERROR_NOT_FRUIT_OWNER);
   });
 
   it("givenSellFruitRequest_whenOwnerAndFruitExists_shouldModifyFruitForSale", async () => {
     await fruitContract.addFruit(FRUIT_NAME, DEFAULT_PRICE);
     await expect(fruitContract.sellFruit(ZERO_INDEX, DEFAULT_PRICE)).to.emit(
       fruitContract,
-      "FruitForSale"
+      emits.FRUIT_FOR_SALE
     );
     const addedFruit = await fruitContract.fruits(ZERO_INDEX);
     expect(addedFruit.forSale).to.equal(true);
