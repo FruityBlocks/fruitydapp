@@ -33,7 +33,7 @@ contract NewFruitMarketPlace {
 
     event Registration(address indexed user);
     event FruitAdded(uint256 indexed fruitId, string name, uint256 price);
-    event FruitForSale(uint256 indexed fruitId, string name, uint256 price);
+    event FruitForSale(uint256 indexed fruitId, uint256 price);
     event FruitSold(uint256 indexed fruitId, address indexed seller, address indexed buyer, uint256 price);
     event SellerRated(address indexed seller, address indexed buyer, uint8 rating, string comment);
 
@@ -66,6 +66,16 @@ contract NewFruitMarketPlace {
         }));
         userFruits[msg.sender].push(fruitId);
         emit FruitAdded(fruitId, _name, _price);
+    }
+
+    function sellFruit(uint256 _fruitId, uint256 _price) public {
+        require(fruitIdToIndex[_fruitId] < fruits.length, "The fruit does not exist");
+        uint256 index = fruitIdToIndex[_fruitId];
+        require(fruits[index].owner == msg.sender, "You are not the owner of this fruit");
+
+        fruits[index].forSale = true;
+        fruits[index].price = _price;
+        emit FruitForSale(_fruitId, _price);
     }
 
 }
