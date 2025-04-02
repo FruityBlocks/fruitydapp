@@ -48,25 +48,54 @@ describe("NewFruitMarketPlaceBuyFruits", () => {
     );
   });
 
+  // =====================
+  //        TEST 7
+  // =====================
   it("givenBuyFruit_whenInsufficientFund_shouldRevertWithError", async () => {
     await expect(
       fruitContract.connect(buyer).buyFruit(strings.ZERO_INDEX, {
         value: strings.INSUFFICIENT_PRICE,
       })
     ).to.be.revertedWith(errorMessages.ERROR_INSUFFICIENT_FUNDS);
+    const sellerFruits = await fruitContract.getUserFruits();
+    expect(sellerFruits).to.be.an(strings.EMPTY_ARRAY).to.have.lengthOf(2);
   });
 
+  // =====================
+  //        TEST 3
+  // =====================
   it("givenBuyFruit_whenSufficientFunds_shouldCorrectlyMakeTransfer", async () => {
     const ownerBalance = await ethers.provider.getBalance(owner);
     const buyerBalance = await ethers.provider.getBalance(buyer);
-    await fruitContract.connect(buyer).buyFruit(strings.ZERO_INDEX, {
-      value: strings.DEFAULT_PRICE,
-    });
+    const transaction = await fruitContract
+      .connect(buyer)
+      .buyFruit(strings.ZERO_INDEX, {
+        value: strings.DEFAULT_PRICE,
+      });
+    const finalTsx = await transaction.wait();
+    const usedGas = finalTsx.gasUsed;
+    const gasPrice = finalTsx.gasPrice;
+    const tot = usedGas * gasPrice;
+
     const newOwnerBalance = await ethers.provider.getBalance(owner);
     const newBuyerBalance = await ethers.provider.getBalance(buyer);
     expect(newOwnerBalance).to.be.greaterThan(ownerBalance);
+    expect(newOwnerBalance - ownerBalance).to.be.equal(strings.DEFAULT_PRICE);
     expect(newBuyerBalance).to.be.lessThan(buyerBalance);
+    expect(buyerBalance - (newBuyerBalance + tot)).to.be.equal(
+      strings.DEFAULT_PRICE
+    );
+  });
 
+  // =====================
+  //        TEST 4
+  // =====================
+  it("givenBuyFruit_whenSufficientFunds_shouldCorrectlyUpdateFruitAvailability", async () => {
+    await expect(
+      fruitContract.connect(buyer).buyFruit(strings.ZERO_INDEX, {
+        value: strings.DEFAULT_PRICE,
+      })
+    ).to.emit(fruitContract, emits.FRUIT_SOLD);
     const buyerFruits = await fruitContract.connect(buyer).getUserFruits();
     const sellerFruits = await fruitContract.getUserFruits();
     expect(buyerFruits).to.be.an(strings.EMPTY_ARRAY).that.is.not.empty;

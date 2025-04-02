@@ -19,6 +19,9 @@ describe("NewFruitMarketPlace", () => {
     await fruitContract.connect(buyer).createUser();
   });
 
+  // =====================
+  //        TEST 1
+  // =====================
   it("givenNewFruitMarketPlace_whenInstanceStart_shouldDeployContract", async () => {
     expect(await fruitContract.getAddress()).to.not.equal(ethers.ZeroAddress);
   });
@@ -27,6 +30,9 @@ describe("NewFruitMarketPlace", () => {
     expect(await fruitContract.isRegistered()).to.equal(true);
   });
 
+  // =====================
+  //        TEST 2
+  // =====================
   it("givenAddFruitRequest_whenFruitDoesNotExist_shouldAddFruit", async () => {
     await expect(
       fruitContract.addFruit(strings.FRUIT_NAME, strings.DEFAULT_PRICE)
