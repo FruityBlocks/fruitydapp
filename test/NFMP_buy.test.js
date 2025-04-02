@@ -57,9 +57,16 @@ describe("NewFruitMarketPlaceBuyFruits", () => {
   });
 
   it("givenBuyFruit_whenSufficientFunds_shouldCorrectlyMakeTransfer", async () => {
+    const ownerBalance = await ethers.provider.getBalance(owner);
+    const buyerBalance = await ethers.provider.getBalance(buyer);
     await fruitContract.connect(buyer).buyFruit(strings.ZERO_INDEX, {
       value: strings.DEFAULT_PRICE,
     });
+    const newOwnerBalance = await ethers.provider.getBalance(owner);
+    const newBuyerBalance = await ethers.provider.getBalance(buyer);
+    expect(newOwnerBalance).to.be.greaterThan(ownerBalance);
+    expect(newBuyerBalance).to.be.lessThan(buyerBalance);
+
     const buyerFruits = await fruitContract.connect(buyer).getUserFruits();
     const sellerFruits = await fruitContract.getUserFruits();
     expect(buyerFruits).to.be.an(strings.EMPTY_ARRAY).that.is.not.empty;
