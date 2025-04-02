@@ -3,7 +3,7 @@ const { ethers } = require("hardhat");
 
 const FRUIT_NAME = "BANANA";
 const DEFAULT_PRICE = ethers.parseEther("1");
-
+const ZERO_INDEX = 0;
 
 describe("NewFruitMarketPlace", () => {
   let fruitContract;
@@ -28,7 +28,7 @@ describe("NewFruitMarketPlace", () => {
 
   it("givenAddFruitRequest_whenFruitDoesNotExist_shouldAddFruit", async () => {
     await fruitContract.addFruit(FRUIT_NAME, DEFAULT_PRICE);
-    const addedFruit = await fruitContract.fruits(0);
+    const addedFruit = await fruitContract.fruits(ZERO_INDEX);
     expect(addedFruit.name).to.equal(FRUIT_NAME);
     expect(addedFruit.price).to.equal(DEFAULT_PRICE);
     expect(addedFruit.forSale).to.equal(false);
@@ -51,25 +51,27 @@ describe("NewFruitMarketPlace", () => {
   });
 
   it("givenSellFruitRequest_whenFruitDoesNotExist_shouldRevertWithError", async () => {
-    await expect(fruitContract.sellFruit(0, DEFAULT_PRICE)).to.be.revertedWith(
-      "The fruit does not exist"
-    );
+    await expect(
+      fruitContract.sellFruit(ZERO_INDEX, DEFAULT_PRICE)
+    ).to.be.revertedWith("The fruit does not exist");
   });
 
   it("givenSellFruitRequest_whenNotOwner_shouldRevertWithError", async () => {
     await fruitContract.addFruit(FRUIT_NAME, DEFAULT_PRICE);
     await expect(
-      fruitContract.connect(buyer).sellFruit(0, DEFAULT_PRICE)
+      fruitContract.connect(buyer).sellFruit(ZERO_INDEX, DEFAULT_PRICE)
     ).to.be.revertedWith("You are not the owner of this fruit");
   });
 
   it("givenSellFruitRequest_whenOwnerAndFruitExists_shouldModifyFruitForSale", async () => {
     await fruitContract.addFruit(FRUIT_NAME, DEFAULT_PRICE);
-    await expect(fruitContract.sellFruit(0, DEFAULT_PRICE)).to.emit(
+    await expect(fruitContract.sellFruit(ZERO_INDEX, DEFAULT_PRICE)).to.emit(
       fruitContract,
       "FruitForSale"
     );
-    const addedFruit = await fruitContract.fruits(0);
+    const addedFruit = await fruitContract.fruits(ZERO_INDEX);
     expect(addedFruit.forSale).to.equal(true);
   });
+
+  it("givenSellFruitRequest_whenOwnerAndFruitExists_shouldModifyFruitForSale", async () => {});
 });

@@ -78,4 +78,42 @@ contract NewFruitMarketPlace {
         emit FruitForSale(_fruitId, _price);
     }
 
+    function getUserFruits() public view returns (uint256[] memory) {
+        require(isRegistered(), "User is not registered, you are not allowed to do this action.");
+        return userFruits[msg.sender];
+    }
+
+    function getUserFruit(uint256 _fruitId) public view returns (Fruit memory){
+        require(isRegistered(), "User is not registered, you are not allowed to do this action.");
+        uint256 index = fruitIdToIndex[_fruitId];
+        require(fruits[index].owner == msg.sender, "You are not the owner of this fruit");
+        return fruits[index];
+    }
+
+    function getFruitsForSale() public view returns (uint256[] memory) {
+        require(isRegistered(), "User is not registered, you are not allowed to do this action.");
+        uint256 count = 0;
+        for (uint256 i = 0; i < fruits.length; i++) {
+            if (fruits[i].forSale) {
+                count++;
+            }
+        }
+        uint256[] memory fruitsForSale = new uint256[](count);
+        uint256 index = 0;
+        for (uint256 i = 0; i < fruits.length; i++) {
+            if (fruits[i].forSale) {
+                fruitsForSale[index] = fruits[i].id;
+                index++;
+            }
+        }
+        return fruitsForSale;
+    }
+
+    function getFruitForSale(uint256 _fruitId) public view returns (Fruit memory){
+        require(isRegistered(), "User is not registered, you are not allowed to do this action.");
+        uint256 index = fruitIdToIndex[_fruitId];
+        require(fruits[index].forSale == true, "This fruit is not for sale!");
+        return fruits[index];
+    }
+
 }
