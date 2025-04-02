@@ -28,7 +28,9 @@ describe("NewFruitMarketPlace", () => {
   });
 
   it("givenAddFruitRequest_whenFruitDoesNotExist_shouldAddFruit", async () => {
-    await fruitContract.addFruit(strings.FRUIT_NAME, strings.DEFAULT_PRICE);
+    await expect(
+      fruitContract.addFruit(strings.FRUIT_NAME, strings.DEFAULT_PRICE)
+    ).to.emit(fruitContract, emits.FRUIT_ADDED);
     const addedFruit = await fruitContract.getUserFruit(strings.ZERO_INDEX);
     expect(addedFruit.name).to.equal(strings.FRUIT_NAME);
     expect(addedFruit.price).to.equal(strings.DEFAULT_PRICE);
@@ -71,13 +73,6 @@ describe("NewFruitMarketPlace", () => {
     await expect(
       fruitContract.sellFruit(strings.ZERO_INDEX, strings.DEFAULT_PRICE)
     ).to.emit(fruitContract, emits.FRUIT_FOR_SALE);
-    const addedFruit = await fruitContract.getUserFruit(strings.ZERO_INDEX);
-    expect(addedFruit.forSale).to.equal(true);
-  });
-
-  it("givenSellFruitRequest_whenOwnerAndFruitExists_shouldModifyFruitForSale", async () => {
-    await fruitContract.addFruit(strings.FRUIT_NAME, strings.DEFAULT_PRICE);
-    await fruitContract.sellFruit(strings.ZERO_INDEX, strings.DEFAULT_PRICE);
     const fruit = await fruitContract.getUserFruit(strings.ZERO_INDEX);
     expect(fruit.forSale).to.be.equal(true);
   });
