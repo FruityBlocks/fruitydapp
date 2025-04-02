@@ -28,13 +28,13 @@ contract NewFruitMarketPlace {
         UserRating[] ratings;
     }
 
-    Fruit[] public fruits;
+    Fruit[] private fruits;
     uint256 private nextFruitId = 0;
 
-    mapping(string => bool) public fruitNameExists;
-    mapping(address => User) public users;
-    mapping(address => uint256[]) public userFruits;
-    mapping(uint256 => uint256) public fruitIdToIndex;
+    mapping(string => bool) private fruitNameExists;
+    mapping(address => User) private users;
+    mapping(address => uint256[]) private userFruits;
+    mapping(uint256 => uint256) private fruitIdToIndex;
 
 
     event Registration(address indexed user);

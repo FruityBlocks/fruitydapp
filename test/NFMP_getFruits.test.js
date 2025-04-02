@@ -28,12 +28,12 @@ describe("NewFruitMarketPlaceGetFruits", () => {
 
   it("givenGetUserFruits_whenUserHasNoFruits_shouldReturnEmptyArray", async () => {
     const userFruits = await fruitContract.connect(buyer).getUserFruits();
-    expect(userFruits).to.be.an(strings.ARRAY_STRING).that.is.empty;
+    expect(userFruits).to.be.an(strings.EMPTY_ARRAY).that.is.empty;
   });
 
   it("givenGetUserFruits_whenUserHasFruits_shouldReturnArrayOfIds", async () => {
     const userFruits = await fruitContract.getUserFruits();
-    expect(userFruits).to.be.an(strings.ARRAY_STRING).that.is.not.empty;
+    expect(userFruits).to.be.an(strings.EMPTY_ARRAY).that.is.not.empty;
     const fruit = userFruits.at(strings.ZERO_INDEX);
     expect(fruit).to.be.equal(strings.ZERO_INDEX);
   });
@@ -70,7 +70,42 @@ describe("NewFruitMarketPlaceGetFruits", () => {
     ).to.be.revertedWith(errorMessages.ERROR_USER_NOT_REGISTERED);
   });
 
-  //   it("givenGetFruitsForSale_whenNoFruitsForSale_shouldReturnEmptyArray", async () => {
-  //     await expect(fruitContract.getFruitsForSale()).to.be.
-  //   });
+  it("givenGetFruitsForSale_whenNoFruitsForSale_shouldReturnEmptyArray", async () => {
+    const fruitsForSale = await fruitContract.getFruitsForSale();
+    expect(fruitsForSale).to.be.an(strings.EMPTY_ARRAY).that.is.empty;
+  });
+
+  it("givenGetFruitsForSale_whenFruitsForSaleNotEmpty_shouldArrayOfFruitIds", async () => {
+    await fruitContract.sellFruit(strings.ZERO_INDEX, strings.DEFAULT_PRICE);
+    const fruitsForSale = await fruitContract.getFruitsForSale();
+    expect(fruitsForSale).to.be.an(strings.EMPTY_ARRAY).that.is.not.empty;
+    expect(fruitsForSale.at(strings.ZERO_INDEX)).to.equal(strings.ZERO_INDEX);
+  });
+
+  it("givenGetFruitForSale_whenNotRegistered_shouldRevertWithError", async () => {
+    await expect(
+      fruitContract.connect(random).getFruitForSale(strings.ZERO_INDEX)
+    ).to.be.revertedWith(errorMessages.ERROR_USER_NOT_REGISTERED);
+  });
+
+  it("givenGetFruitForSale_whenFruitDoesNotExist_shouldRevertWithError", async () => {
+    await expect(
+      fruitContract.getFruitForSale(strings.BIG_INDEX)
+    ).to.be.revertedWith(errorMessages.ERROR_FRUIT_DOES_NOT_EXIST);
+  });
+
+  it("givenGetFruitForSale_whenFruitIsNotForSale_shouldRevertWithError", async () => {
+    await expect(
+      fruitContract.getFruitForSale(strings.ZERO_INDEX)
+    ).to.be.revertedWith(errorMessages.ERROR_FRUIT_NOT_FOR_SALE);
+  });
+
+  it("givenGetFruitForSale_whenValidIndex_shouldFruitForSale", async () => {
+    await fruitContract.sellFruit(strings.ZERO_INDEX, strings.DEFAULT_PRICE);
+    const fruit = await fruitContract.getFruitForSale(strings.ZERO_INDEX);
+    expect(fruit.name).to.be.equal(strings.FRUIT_NAME);
+    expect(fruit.id).to.be.equal(strings.ZERO_INDEX);
+    expect(fruit.forSale).to.be.equal(true);
+    expect(fruit.owner).to.be.equal(await owner.getAddress());
+  });
 });
