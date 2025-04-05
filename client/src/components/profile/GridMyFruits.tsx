@@ -1,11 +1,12 @@
-import { Box, Loader, SimpleGrid } from "@mantine/core";
+import { Box, SimpleGrid } from "@mantine/core";
 import useGetUserFruits from "../../hooks/useGetUserFruits";
 import CardMyFruit from "./CardMyFruit";
+import Spinner from "../Spinner";
 
 const GridMyFruits = () => {
   const { fruits, loading } = useGetUserFruits();
 
-  if (loading) return <Loader />;
+  if (loading) return <Spinner />;
 
   return (
     <Box>

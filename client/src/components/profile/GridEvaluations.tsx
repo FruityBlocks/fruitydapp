@@ -1,6 +1,6 @@
 import { Box, SimpleGrid, Title } from "@mantine/core";
 import Evaluation from "./Evaluation";
-import { Eval } from "../../tempData";
+import { Eval } from "../../models/Eval";
 
 interface GridEvaluationsProps {
   evals: Eval[];
