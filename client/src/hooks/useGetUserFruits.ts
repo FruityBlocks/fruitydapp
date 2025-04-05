@@ -3,7 +3,7 @@ import useWeb3 from "./useWeb3";
 import { Fruit } from "../models/Fruit";
 import Web3 from "web3";
 
-const useGetFruitsForSale = () => {
+const useGetUserFruits = () => {
   const { contract } = useWeb3();
   const [fruits, setFruits] = useState<Fruit[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -16,13 +16,13 @@ const useGetFruitsForSale = () => {
     }
 
     try {
-      const fruitsForSale = await contract.getFruitsForSale();
-      if (fruitsForSale && Object.keys(fruitsForSale).length > 0) {
-        const fruitIds = Object.values(fruitsForSale);
+      const userFruits = await contract.getUserFruits();
+      if (userFruits && Object.keys(userFruits).length > 0) {
+        const fruitIds = Object.values(userFruits);
 
         const fruitPromises = fruitIds.map(async (id) => {
           const [fruitId, name, priceInWei, owner, isForSale] =
-            await contract.getFruitForSale(id);
+            await contract.getUserFruit(id);
           const price = Web3.utils.fromWei(priceInWei, "ether");
 
           return {
@@ -53,4 +53,4 @@ const useGetFruitsForSale = () => {
   return { fruits, loading };
 };
 
-export default useGetFruitsForSale;
+export default useGetUserFruits;

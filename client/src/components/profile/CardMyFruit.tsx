@@ -1,9 +1,9 @@
 import { Badge, Card, Group, Stack, Text } from "@mantine/core";
-import { IconCurrencyEthereum } from "@tabler/icons-react";
-import { Fruit } from "../../tempData";
+import { IconCurrencyEthereum, IconLemon } from "@tabler/icons-react";
 import ConfirmationModal from "../marketplace/ConfirmationModal";
 import { useDisclosure } from "@mantine/hooks";
 import { ModalType } from "../../utils/enums";
+import { Fruit } from "../../models/Fruit";
 
 interface CardMyFruitsProps {
   item: Fruit;
@@ -14,7 +14,7 @@ const CardMyFruit = ({ item }: CardMyFruitsProps) => {
   return (
     <>
       <Card
-        key={item.seller}
+        key={item.owner}
         shadow="sm"
         padding="lg"
         radius="md"
@@ -35,12 +35,9 @@ const CardMyFruit = ({ item }: CardMyFruitsProps) => {
               {item.name}
             </Text>
           </Group>
-          <item.icon size={32} />
-          <Text size="sm" c="dimmed">
-            Type: {item.type}
-          </Text>
+          <IconLemon size={32} />
           <Text size="lg" c="green">
-            Bought For
+            Current Price :
             <IconCurrencyEthereum size={17} />
             {item.price}
           </Text>
@@ -50,7 +47,7 @@ const CardMyFruit = ({ item }: CardMyFruitsProps) => {
         </Stack>
       </Card>
       <ConfirmationModal
-        item={item}
+        fruit={item}
         opened={opened}
         close={close}
         type={ModalType.RATE}

@@ -2,11 +2,7 @@ import { Badge, Card, Group, Stack, Text } from "@mantine/core";
 import { Fruit } from "../../models/Fruit";
 import { useDisclosure } from "@mantine/hooks";
 import ConfirmationModal from "./ConfirmationModal";
-import {
-  IconCurrencyEthereum,
-  IconLemon,
-  IconMelon,
-} from "@tabler/icons-react";
+import { IconCurrencyEthereum, IconLemon } from "@tabler/icons-react";
 import { ModalType } from "../../utils/enums";
 
 interface CardFruitProps {
@@ -41,7 +37,7 @@ const CardFruit = ({ fruit }: CardFruitProps) => {
               {fruit.name}
             </Text>
           </Group>
-          <IconLemon />
+          <IconLemon size={32} />
           <Text size="xl" c="green">
             <IconCurrencyEthereum size={17} />
             {fruit.price}
