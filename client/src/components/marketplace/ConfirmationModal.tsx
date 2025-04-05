@@ -36,17 +36,24 @@ const ConfirmationModal = ({
   });
 
   const handleSubmit = (values: FormValuesRate) => {
-    if (form.errors.comment || form.errors.rating) return;
-    console.log(values);
+    if (type === ModalType.RATE) {
+      if (form.errors.comment || form.errors.rating) return;
+      console.log("Rating submitted", values);
+    }
+
+    if (type === ModalType.SELL) {
+      console.log("Fruit listed for sale:", fruit.name);
+    }
+
     close();
   };
 
   return (
     <Modal opened={opened} onClose={close} centered>
       <Title size="lg" c="fruity-orange">
-        {type === ModalType.BUY || type === ModalType.SELL ? (
+        {type === ModalType.BUY || type == ModalType.SELL ? (
           <>
-            You are about to {type === ModalType.SELL ? "Sell" : "Buy"}{" "}
+            You are about to {type == ModalType.SELL ? "Sell" : "Buy"}{" "}
             {fruit.name} for <IconCurrencyEthereum size={20} /> {fruit.price}
           </>
         ) : (

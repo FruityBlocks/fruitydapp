@@ -11,7 +11,7 @@ interface CardFruitProps {
 
 const CardFruit = ({ fruit }: CardFruitProps) => {
   const [opened, { open, close }] = useDisclosure(false);
-  console.log(fruit);
+
   return (
     <>
       <Card

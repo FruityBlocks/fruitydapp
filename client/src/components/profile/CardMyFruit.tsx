@@ -17,7 +17,6 @@ const CardMyFruit = ({ item }: CardMyFruitsProps) => {
 
   const handleOpenModal = (type: ModalType) => {
     setModalType(type);
-    console.log(modalType);
     open();
   };
 
