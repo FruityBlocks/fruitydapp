@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router";
 import Home from "./Home";
 import MarketPlace from "./MarketPlace";
 import Profile from "./Profile";
-import Sell from "./Sell";
+import CreateFruit from "./CreateFruit";
 import ConnectWallet from "./ConnectWallet";
 import Layout from "../layout/Layout";
 import { ProtectedRoute } from "./ProtectedRoute";
@@ -41,7 +41,7 @@ const AppRoutes = () => {
           path="/sell"
           element={
             <ProtectedRoute>
-              <Sell />
+              <CreateFruit />
             </ProtectedRoute>
           }
         />
