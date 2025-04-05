@@ -1,9 +1,11 @@
-import { Badge, Card, Group, Stack, Text } from "@mantine/core";
-import { IconCurrencyEthereum, IconLemon } from "@tabler/icons-react";
+import { Card } from "@mantine/core";
 import ConfirmationModal from "../marketplace/ConfirmationModal";
 import { useDisclosure } from "@mantine/hooks";
 import { ModalType } from "../../utils/enums";
 import { Fruit } from "../../models/Fruit";
+import { useState } from "react";
+import MenuCard from "./MenuCard";
+import CardInfos from "./CardInfos";
 
 interface CardMyFruitsProps {
   item: Fruit;
@@ -11,6 +13,14 @@ interface CardMyFruitsProps {
 
 const CardMyFruit = ({ item }: CardMyFruitsProps) => {
   const [opened, { open, close }] = useDisclosure(false);
+  const [modalType, setModalType] = useState<ModalType | null>(null);
+
+  const handleOpenModal = (type: ModalType) => {
+    setModalType(type);
+    console.log(modalType);
+    open();
+  };
+
   return (
     <>
       <Card
@@ -19,39 +29,24 @@ const CardMyFruit = ({ item }: CardMyFruitsProps) => {
         padding="lg"
         radius="md"
         withBorder
-        style={{
-          cursor: "pointer",
-        }}
+        style={{ cursor: "pointer", position: "relative" }}
       >
-        <Stack align="center" justify="center">
-          <Group align="center">
-            <Text
-              size="xl"
-              c={"fruity-orange"}
-              style={{
-                fontWeight: 600,
-              }}
-            >
-              {item.name}
-            </Text>
-          </Group>
-          <IconLemon size={32} />
-          <Text size="lg" c="green">
-            Current Price :
-            <IconCurrencyEthereum size={17} />
-            {item.price}
-          </Text>
-          <Badge onClick={open} color="fruity-orange.2" variant="light">
-            Rate Seller
-          </Badge>
-        </Stack>
+        <MenuCard onSelect={handleOpenModal} />
+
+        <CardInfos item={item} />
       </Card>
-      <ConfirmationModal
-        fruit={item}
-        opened={opened}
-        close={close}
-        type={ModalType.RATE}
-      />
+
+      {modalType && (
+        <ConfirmationModal
+          fruit={item}
+          opened={opened}
+          close={() => {
+            close();
+            setModalType(null);
+          }}
+          type={modalType}
+        />
+      )}
     </>
   );
 };

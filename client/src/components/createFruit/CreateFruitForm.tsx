@@ -4,10 +4,8 @@ import { ethers } from "ethers";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CreatingFruitFormState } from "../../utils/enums";
-
 import useWeb3 from "../../hooks/useWeb3";
 import { validateFruitName, validatePrice } from "../../utils/formValidation";
-
 import FormView from "./createFruitForm/Form";
 import Loading from "./createFruitForm/Loading";
 import Result from "./createFruitForm/Result";
@@ -15,6 +13,7 @@ import {
   FRUIT_CREATION_FAILED,
   FRUIT_CREATION_SUCCESS,
 } from "../../models/constants";
+
 
 interface FormFruits {
   fruitName: string;

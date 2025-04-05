@@ -44,10 +44,10 @@ const ConfirmationModal = ({
   return (
     <Modal opened={opened} onClose={close} centered>
       <Title size="lg" c="fruity-orange">
-        {type === ModalType.BUY ? (
+        {type === ModalType.BUY || type === ModalType.SELL ? (
           <>
-            You are about to buy {fruit.name} for{" "}
-            <IconCurrencyEthereum size={20} /> {fruit.price}
+            You are about to {type === ModalType.SELL ? "Sell" : "Buy"}{" "}
+            {fruit.name} for <IconCurrencyEthereum size={20} /> {fruit.price}
           </>
         ) : (
           "Rate the buyer"
