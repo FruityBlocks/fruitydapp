@@ -1,10 +1,19 @@
-import { Modal, Stack, Text, Title, Rating, Textarea } from "@mantine/core";
+import {
+  Modal,
+  Stack,
+  Text,
+  Title,
+  Rating,
+  Textarea,
+  NumberInput,
+} from "@mantine/core";
 import { Fruit } from "../../models/Fruit";
 import { IconCurrencyEthereum } from "@tabler/icons-react";
 import ButtonGroup from "../ButtonGroup";
 import { ModalType } from "../../utils/enums";
 import { useForm } from "@mantine/form";
 import { validateComment } from "../../utils/formValidation";
+import { useState } from "react";
 
 interface ConfirmationModalProps {
   opened: boolean;
@@ -24,6 +33,7 @@ const ConfirmationModal = ({
   fruit,
   type,
 }: ConfirmationModalProps) => {
+  const [newPrice, setNewPrice] = useState<number>(fruit.price);
   const form = useForm({
     initialValues: {
       comment: "",
@@ -42,10 +52,25 @@ const ConfirmationModal = ({
     }
 
     if (type === ModalType.SELL) {
+      console.log(newPrice);
       console.log("Fruit listed for sale:", fruit.name);
     }
 
     close();
+  };
+
+  // Handle button click separately from form submission
+  const handleConfirmClick = () => {
+    if (type === ModalType.RATE) {
+      form.onSubmit(handleSubmit)();
+    } else if (type === ModalType.SELL) {
+      console.log(newPrice);
+      console.log("Fruit listed for sale:", fruit.name);
+      close();
+    } else {
+      // Handle other modal types
+      close();
+    }
   };
 
   return (
@@ -87,8 +112,23 @@ const ConfirmationModal = ({
           </>
         )}
 
+        {type === ModalType.SELL && (
+          <>
+            <NumberInput
+              label="New Price"
+              placeholder="Price"
+              min={0.1}
+              max={1000}
+              decimalScale={1}
+              defaultValue={fruit.price}
+              leftSection={<IconCurrencyEthereum />}
+              onChange={(value) => setNewPrice(Number(value))}
+            />
+          </>
+        )}
+
         <ButtonGroup
-          submit={form.onSubmit(handleSubmit)}
+          submit={() => handleConfirmClick()}
           cancel={close}
           leftLabel="Cancel"
           rightLabel="Confirm"

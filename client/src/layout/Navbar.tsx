@@ -46,7 +46,7 @@ const Navbar = ({ toggle }: NavBarProps) => {
           component={Link}
           to="/create"
           label={<Text size="xl">Create Fruit</Text>}
-          active={activeLink === "/sell"}
+          active={activeLink === "/create"}
           style={{ borderRadius: "12px", padding: "8px 16px" }}
         />
         <NavLink
