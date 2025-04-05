@@ -1,9 +1,9 @@
 import { Loader, SimpleGrid } from "@mantine/core";
 import CardFruit from "./CardFruit";
-import useGetFruits from "../../hooks/useGetFruits";
+import useGetFruitsForSale from "../../hooks/useGetFruitsForSale";
 
 const MarketPlaceGrid = () => {
-  const { fruits, loading } = useGetFruits();
+  const { fruits, loading } = useGetFruitsForSale();
 
   if (loading) return <Loader />;
 

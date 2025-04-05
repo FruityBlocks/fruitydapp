@@ -56,7 +56,7 @@ const ConfirmationModal = ({
 
       <Stack mt="lg">
         <Text size="md">
-          Seller: {fruit.seller.slice(0, 6)}...{fruit.seller.slice(-4)}
+          Seller: {fruit.owner.slice(0, 6)}...{fruit.owner.slice(-4)}
         </Text>
 
         {type === ModalType.RATE && (

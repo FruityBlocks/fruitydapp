@@ -1,7 +1,7 @@
 import { ReactNode, createContext, useState, useCallback } from "react";
 import { ethers } from "ethers";
 import { notifications } from "@mantine/notifications";
-import FruitMarketplace from "../../../artifacts/contracts/FruitMarketPlace.sol/FruitMarketplace.json";
+import FruitMarketplace from "../../../artifacts/contracts/NewFruitMarketPlace.sol/NewFruitMarketPlace.json";
 import { Web3ContextType } from "../models/interfaces";
 
 const Web3Context = createContext<Web3ContextType | undefined>(undefined);
@@ -64,13 +64,13 @@ const Web3Provider = ({ children }: Web3ProviderProps) => {
       setAccount(newAccount);
       setNetwork(chainId);
 
-      const rocketContract = new ethers.Contract(
+      const fruitContract = new ethers.Contract(
         DEPLOYED_ADDRESS,
         ABI,
         newSigner
       );
-      console.log(rocketContract);
-      setContract(rocketContract);
+      console.log(fruitContract);
+      setContract(fruitContract);
 
       window.ethereum.on("accountsChanged", (accounts: string[]) => {
         setAccount(accounts.length ? accounts[0] : null);
@@ -79,6 +79,7 @@ const Web3Provider = ({ children }: Web3ProviderProps) => {
       window.ethereum.on("chainChanged", (newChainId: string) => {
         setNetwork(parseInt(newChainId, 16).toString());
       });
+      fruitContract.createUser();
     } catch (error: any) {
       const errorMessages: Record<number, string> = {
         "-32002":

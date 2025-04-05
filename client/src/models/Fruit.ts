@@ -1,5 +1,7 @@
 export type Fruit = {
-    name: string;
-    price: number;
-    seller: string;
+  id: number;
+  name: string;
+  price: number;
+  owner: string;
+  forSale: boolean;
 };
