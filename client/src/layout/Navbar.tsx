@@ -44,8 +44,8 @@ const Navbar = ({ toggle }: NavBarProps) => {
           leftSection={<IconCurrencyEthereum size={22} stroke={1.5} />}
           onClick={toggle}
           component={Link}
-          to="/sell"
-          label={<Text size="xl">Sell</Text>}
+          to="/create"
+          label={<Text size="xl">Create Fruit</Text>}
           active={activeLink === "/sell"}
           style={{ borderRadius: "12px", padding: "8px 16px" }}
         />

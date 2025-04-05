@@ -38,7 +38,7 @@ const AppRoutes = () => {
           }
         />
         <Route
-          path="/sell"
+          path="/create"
           element={
             <ProtectedRoute>
               <CreateFruit />
