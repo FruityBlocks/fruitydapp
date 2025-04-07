@@ -12,7 +12,7 @@ import Result from "./createFruitForm/Result";
 import {
   FRUIT_CREATION_FAILED,
   FRUIT_CREATION_SUCCESS,
-} from "../../models/constants";
+} from "../../utils/constants";
 
 
 interface FormFruits {

@@ -79,7 +79,7 @@ const Web3Provider = ({ children }: Web3ProviderProps) => {
         const tsx = await fruitContract.createUser();
         await tsx.wait();
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
       handleError("Connection Error", "Failed to connect your wallet.", "red");
       setProvider(null);

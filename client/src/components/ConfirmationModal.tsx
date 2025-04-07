@@ -21,7 +21,7 @@ import { handleError } from "../models/Errors";
 import {
   DEFAULT_NOTI_MESSAGE_TRANSACTION_FAIL,
   DEFAULT_NOTI_TITLE,
-} from "../models/constants";
+} from "../utils/constants";
 
 interface ConfirmationModalProps {
   opened: boolean;
