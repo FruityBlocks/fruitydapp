@@ -15,7 +15,9 @@ const GridMyFruits = () => {
             <CardMyFruit key={index} item={item} reloadFruits={reload} />
           ))
         ) : (
-          <Text size="xl">No Fruits yet.</Text>
+          <Text c="red" size="xl">
+            No Fruits yet.
+          </Text>
         )}
       </SimpleGrid>
     </Box>

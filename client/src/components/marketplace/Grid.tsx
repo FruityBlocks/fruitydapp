@@ -14,7 +14,9 @@ const MarketPlaceGrid = () => {
           <CardFruit key={index} fruit={item} reloadMarketPlace={reload} />
         ))
       ) : (
-        <Text size="xl">No Fruits For Sale</Text>
+        <Text c="red" size="xl">
+          No Fruits For Sale
+        </Text>
       )}
     </SimpleGrid>
   );

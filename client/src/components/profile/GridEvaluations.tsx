@@ -11,7 +11,9 @@ const GridEvaluations = () => {
         {ratings.length > 0 ? (
           ratings.map((item, index) => <Evaluation key={index} eval={item} />)
         ) : (
-          <Text size="xl">No rating yet.</Text>
+          <Text c="red" size="xl">
+            No rating yet.
+          </Text>
         )}
       </SimpleGrid>
     </Box>
