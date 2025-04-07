@@ -13,8 +13,7 @@ export const validatePrice = (value: string) => {
 };
 
 export const validateComment = (value: string) => {
-  if (value.length > 200)
-    return "Comment cannot be longer than 200 characters.";
+  if (value.length > 40) return "Comment cannot be longer than 40 characters.";
   if (/[^a-zA-Z0-9\s]/.test(value))
     return "Comment cannot contain special characters.";
   return null;

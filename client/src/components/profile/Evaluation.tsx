@@ -7,7 +7,13 @@ interface EvaluationProps {
 
 const Evaluation = ({ eval: evaluation }: EvaluationProps) => {
   return (
-    <Card shadow="sm" padding="lg" radius="md" style={{ width: "fit-content" }}>
+    <Card
+      shadow="sm"
+      padding="lg"
+      radius="md"
+      withBorder
+      style={{ cursor: "pointer", position: "relative" }}
+    >
       <Stack>
         <Rating value={evaluation.rating} readOnly />
         <Text>
