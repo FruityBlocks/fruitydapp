@@ -8,15 +8,15 @@ import {
   NumberInput,
   LoadingOverlay,
 } from "@mantine/core";
-import { Fruit } from "../../models/Fruit";
+import { Fruit } from "../models/Fruit";
 import { IconCurrencyEthereum } from "@tabler/icons-react";
-import ButtonGroup from "../ButtonGroup";
-import { ModalType } from "../../utils/enums";
+import ButtonGroup from "./ButtonGroup";
+import { ModalType } from "../utils/enums";
 import { useForm } from "@mantine/form";
-import { validateComment } from "../../utils/formValidation";
+import { validateComment } from "../utils/formValidation";
 import { useState } from "react";
-import { contractActions } from "../../api/api";
-import useWeb3 from "../../hooks/useWeb3";
+import { contractActions } from "../api/api";
+import useWeb3 from "../hooks/useWeb3";
 
 interface ConfirmationModalProps {
   opened: boolean;
@@ -40,8 +40,8 @@ const ConfirmationModal = ({
 }: ConfirmationModalProps) => {
   const [newPrice, setNewPrice] = useState<number>(fruit.price);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
-  const { contract } = useWeb3();
-  const { sellFruit } = contractActions(contract!);
+  const { contract, signer } = useWeb3();
+  const { sellFruit, buyFruit } = contractActions(contract!);
   const form = useForm({
     initialValues: {
       comment: "",
@@ -53,31 +53,36 @@ const ConfirmationModal = ({
     },
   });
 
+  const verifyOwnerShip = () => {
+    return signer?.address === fruit.owner;
+  };
+
   const handleSubmit = (values: FormValuesRate) => {
     if (type === ModalType.RATE) {
       if (form.errors.comment || form.errors.rating) return;
       console.log("Rating submitted", values);
     }
-    close();
   };
 
   const handleConfirmClick = async () => {
-    if (type === ModalType.RATE) {
-      form.onSubmit(handleSubmit)();
-    } else if (type === ModalType.SELL) {
-      try {
-        setIsProcessing(true);
+    try {
+      setIsProcessing(true);
+      if (type === ModalType.RATE) {
+        form.onSubmit(handleSubmit)();
+      } else if (type === ModalType.SELL) {
         await sellFruit(fruit.id, newPrice);
         console.log("Fruit listed for sale:", fruit.name);
         close();
         await reloadFruits();
-      } catch (error) {
-        console.error("Error processing transaction:", error);
-      } finally {
-        setIsProcessing(false);
+      } else if (type == ModalType.BUY) {
+        await buyFruit(fruit.id);
+        console.log("You bought this fruit");
+        close();
       }
-    } else {
-      close();
+    } catch (error) {
+      console.error("Error processing transaction:", error);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -140,12 +145,16 @@ const ConfirmationModal = ({
           </>
         )}
 
-        <ButtonGroup
-          submit={() => handleConfirmClick()}
-          cancel={close}
-          leftLabel="Cancel"
-          rightLabel="Confirm"
-        />
+        {verifyOwnerShip() && type === ModalType.BUY ? (
+          <Text c="red">You cannot buy your own fruit</Text>
+        ) : (
+          <ButtonGroup
+            submit={() => handleConfirmClick()}
+            cancel={close}
+            leftLabel="Cancel"
+            rightLabel="Confirm"
+          />
+        )}
       </Stack>
     </Modal>
   );

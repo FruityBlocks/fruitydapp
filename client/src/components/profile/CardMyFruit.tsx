@@ -1,5 +1,5 @@
 import { Card } from "@mantine/core";
-import ConfirmationModal from "../marketplace/ConfirmationModal";
+import ConfirmationModal from "../ConfirmationModal";
 import { useDisclosure } from "@mantine/hooks";
 import { ModalType } from "../../utils/enums";
 import { Fruit } from "../../models/Fruit";

@@ -1,7 +1,7 @@
 import { Badge, Card, Group, Stack, Text } from "@mantine/core";
 import { Fruit } from "../../models/Fruit";
 import { useDisclosure } from "@mantine/hooks";
-import ConfirmationModal from "./ConfirmationModal";
+import ConfirmationModal from "../ConfirmationModal";
 import { IconCurrencyEthereum, IconLemon } from "@tabler/icons-react";
 import { ModalType } from "../../utils/enums";
 
