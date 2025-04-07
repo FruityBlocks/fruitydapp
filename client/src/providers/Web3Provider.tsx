@@ -79,7 +79,11 @@ const Web3Provider = ({ children }: Web3ProviderProps) => {
       window.ethereum.on("chainChanged", (newChainId: string) => {
         setNetwork(parseInt(newChainId, 16).toString());
       });
-      fruitContract.createUser();
+      const isRegistered = await fruitContract.isRegistered();
+      if (!isRegistered) {
+        const tsx = await fruitContract.createUser();
+        await tsx.wait();
+      }
     } catch (error: any) {
       const errorMessages: Record<number, string> = {
         "-32002":

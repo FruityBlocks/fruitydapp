@@ -50,16 +50,13 @@ const ConfirmationModal = ({
       if (form.errors.comment || form.errors.rating) return;
       console.log("Rating submitted", values);
     }
-
     if (type === ModalType.SELL) {
       console.log(newPrice);
       console.log("Fruit listed for sale:", fruit.name);
     }
-
     close();
   };
 
-  // Handle button click separately from form submission
   const handleConfirmClick = () => {
     if (type === ModalType.RATE) {
       form.onSubmit(handleSubmit)();
@@ -68,7 +65,6 @@ const ConfirmationModal = ({
       console.log("Fruit listed for sale:", fruit.name);
       close();
     } else {
-      // Handle other modal types
       close();
     }
   };
