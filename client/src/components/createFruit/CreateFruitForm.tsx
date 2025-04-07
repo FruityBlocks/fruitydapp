@@ -1,6 +1,5 @@
 import { Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { ethers } from "ethers";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CreatingFruitFormState } from "../../utils/enums";
@@ -55,8 +54,7 @@ const CreateFruitForm = () => {
     setFruitCreated(values.fruitName);
 
     try {
-      const priceInWei = ethers.parseUnits(values.price, "ether");
-      await createFruit(values.fruitName, priceInWei);
+      await createFruit(values.fruitName, values.price);
 
       setUiState(CreatingFruitFormState.SUCCESS);
       setMessage(() => FRUIT_CREATION_SUCCESS(values.fruitName));
