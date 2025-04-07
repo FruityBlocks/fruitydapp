@@ -21,7 +21,7 @@ const useGetFruitsForSale = () => {
         const fruitIds = Object.values(fruitsForSale);
 
         const fruitPromises = fruitIds.map(async (id) => {
-          const [fruitId, name, priceInWei, owner, isForSale] =
+          const [fruitId, name, priceInWei, owner, prevOwner, isForSale] =
             await contract.getFruitForSale(id);
           const price = Web3.utils.fromWei(priceInWei, "ether");
 
@@ -30,6 +30,7 @@ const useGetFruitsForSale = () => {
             name: String(name),
             price: Number(price),
             owner: String(owner),
+            prevOwner: String(prevOwner),
             forSale: Boolean(isForSale),
           };
         });

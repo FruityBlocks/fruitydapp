@@ -7,7 +7,6 @@ const GridMyFruits = () => {
   const { fruits, loading, reload } = useGetUserFruits();
 
   if (loading) return <Spinner />;
-
   return (
     <Box>
       <SimpleGrid mb={50} mt={20} cols={{ base: 2, sm: 2, lg: 4 }} spacing="lg">

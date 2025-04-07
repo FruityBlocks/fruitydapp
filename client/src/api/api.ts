@@ -13,4 +13,9 @@ export const contractActions = (contract: Contract) => ({
     await tx.wait();
     return tx;
   },
+  rateSeller: async (comment: string, rating: number, fruitId: number) => {
+    const tx = await contract.rate(comment, rating, fruitId);
+    await tx.wait();
+    return tx;
+  },
 });

@@ -46,7 +46,7 @@ const ConfirmationModal = ({
   const [newPrice, setNewPrice] = useState<number>(fruit.price);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const { contract, signer } = useWeb3();
-  const { sellFruit, buyFruit } = contractActions(contract!);
+  const { sellFruit, buyFruit, rateSeller } = contractActions(contract!);
   const form = useForm({
     initialValues: {
       comment: "",
@@ -62,10 +62,19 @@ const ConfirmationModal = ({
     return signer?.address === fruit.owner;
   };
 
-  const handleSubmit = (values: FormValuesRate) => {
+  const handleSubmit = async (values: FormValuesRate) => {
     if (type === ModalType.RATE) {
       if (form.errors.comment || form.errors.rating) return;
-      console.log("Rating submitted", values);
+      try {
+        await rateSeller(values.comment, values.rating, fruit.id);
+      } catch (error) {
+        console.error(error);
+        handleError(
+          "Error Rating",
+          "Could not rate the user at this time",
+          "red"
+        );
+      }
     }
   };
 
@@ -73,15 +82,14 @@ const ConfirmationModal = ({
     try {
       setIsProcessing(true);
       if (type === ModalType.RATE) {
-        form.onSubmit(handleSubmit)();
+        await form.onSubmit(handleSubmit)();
+        close();
       } else if (type === ModalType.SELL) {
         await sellFruit(fruit.id, newPrice);
-        console.log("Fruit listed for sale:", fruit.name);
         close();
         await reloadFruits();
       } else if (type == ModalType.BUY) {
         await buyFruit(fruit.id, fruit.price);
-        console.log("You bought this fruit");
         close();
         await reloadFruits();
       }

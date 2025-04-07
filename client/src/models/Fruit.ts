@@ -3,5 +3,6 @@ export type Fruit = {
   name: string;
   price: number;
   owner: string;
+  prevOwner: string;
   forSale: boolean;
 };

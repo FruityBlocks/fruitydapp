@@ -54,10 +54,6 @@ const Web3Provider = ({ children }: Web3ProviderProps) => {
       const newAccount = await newSigner.getAddress();
       const networkData = await newProvider.getNetwork();
       const chainId = networkData.chainId.toString();
-      console.log(newSigner);
-      console.log(newAccount);
-      console.log(networkData);
-      console.log(chainId);
 
       setProvider(newProvider);
       setSigner(newSigner);
@@ -69,7 +65,6 @@ const Web3Provider = ({ children }: Web3ProviderProps) => {
         ABI,
         newSigner
       );
-      console.log(fruitContract);
       setContract(fruitContract);
 
       window.ethereum.on("accountsChanged", (accounts: string[]) => {
