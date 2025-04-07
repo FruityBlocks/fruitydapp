@@ -73,6 +73,9 @@ describe("NewFruitMarketPlaceGetFruits", () => {
     expect(ratings).to.be.an(strings.EMPTY_ARRAY).that.is.empty;
   });
 
+  // =====================
+  //        TEST 5
+  // =====================
   it("givenRateRequest_whenRateIsValid_shouldUpdatePrevOwnerRatings", async () => {
     await fruitContract
       .connect(buyer)

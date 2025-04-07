@@ -13,7 +13,7 @@ import {
   FRUIT_CREATION_FAILED,
   FRUIT_CREATION_SUCCESS,
 } from "../../utils/constants";
-
+import { contractActions } from "../../api/api";
 
 interface FormFruits {
   fruitName: string;
@@ -30,6 +30,7 @@ const CreateFruitForm = () => {
   >(CreatingFruitFormState.IDLE);
   const [message, setMessage] = useState<string>("");
   const [fruitCreated, setFruitCreated] = useState<string>("");
+  const { createFruit } = contractActions(contract!);
 
   const form = useForm<FormFruits>({
     initialValues: {
@@ -55,15 +56,14 @@ const CreateFruitForm = () => {
 
     try {
       const priceInWei = ethers.parseUnits(values.price, "ether");
-      const tx = await contract.addFruit(values.fruitName, priceInWei);
-      await tx.wait();
+      await createFruit(values.fruitName, priceInWei);
 
       setUiState(CreatingFruitFormState.SUCCESS);
       setMessage(() => FRUIT_CREATION_SUCCESS(values.fruitName));
       form.reset();
-    } catch (error: any) {
-      const reason = error?.reason || FRUIT_CREATION_FAILED;
-      setMessage(reason);
+    } catch (error) {
+      console.error(error);
+      setMessage(FRUIT_CREATION_FAILED);
       setUiState(CreatingFruitFormState.ERROR);
     }
   };

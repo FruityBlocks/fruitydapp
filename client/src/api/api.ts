@@ -18,4 +18,9 @@ export const contractActions = (contract: Contract) => ({
     await tx.wait();
     return tx;
   },
+  createFruit: async (name: string, price: bigint) => {
+    const tx = await contract.addFruit(name, price);
+    await tx.wait();
+    return tx;
+  },
 });
