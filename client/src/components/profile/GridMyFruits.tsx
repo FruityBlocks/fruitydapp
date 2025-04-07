@@ -4,7 +4,7 @@ import CardMyFruit from "./CardMyFruit";
 import Spinner from "../Spinner";
 
 const GridMyFruits = () => {
-  const { fruits, loading } = useGetUserFruits();
+  const { fruits, loading, reload } = useGetUserFruits();
 
   if (loading) return <Spinner />;
 
@@ -12,7 +12,7 @@ const GridMyFruits = () => {
     <Box>
       <SimpleGrid mb={50} mt={20} cols={{ base: 2, sm: 3, lg: 5 }} spacing="lg">
         {fruits.map((item, index) => (
-          <CardMyFruit key={index} item={item} />
+          <CardMyFruit key={index} item={item} reloadFruits={reload} />
         ))}
       </SimpleGrid>
     </Box>

@@ -6,6 +6,7 @@ import {
   Rating,
   Textarea,
   NumberInput,
+  LoadingOverlay,
 } from "@mantine/core";
 import { Fruit } from "../../models/Fruit";
 import { IconCurrencyEthereum } from "@tabler/icons-react";
@@ -14,12 +15,15 @@ import { ModalType } from "../../utils/enums";
 import { useForm } from "@mantine/form";
 import { validateComment } from "../../utils/formValidation";
 import { useState } from "react";
+import { contractActions } from "../../api/api";
+import useWeb3 from "../../hooks/useWeb3";
 
 interface ConfirmationModalProps {
   opened: boolean;
   close: () => void;
   type: ModalType;
   fruit: Fruit;
+  reloadFruits: () => Promise<void>;
 }
 
 interface FormValuesRate {
@@ -32,8 +36,12 @@ const ConfirmationModal = ({
   close,
   fruit,
   type,
+  reloadFruits,
 }: ConfirmationModalProps) => {
   const [newPrice, setNewPrice] = useState<number>(fruit.price);
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const { contract } = useWeb3();
+  const { sellFruit } = contractActions(contract!);
   const form = useForm({
     initialValues: {
       comment: "",
@@ -50,20 +58,24 @@ const ConfirmationModal = ({
       if (form.errors.comment || form.errors.rating) return;
       console.log("Rating submitted", values);
     }
-    if (type === ModalType.SELL) {
-      console.log(newPrice);
-      console.log("Fruit listed for sale:", fruit.name);
-    }
     close();
   };
 
-  const handleConfirmClick = () => {
+  const handleConfirmClick = async () => {
     if (type === ModalType.RATE) {
       form.onSubmit(handleSubmit)();
     } else if (type === ModalType.SELL) {
-      console.log(newPrice);
-      console.log("Fruit listed for sale:", fruit.name);
-      close();
+      try {
+        setIsProcessing(true);
+        await sellFruit(fruit.id, newPrice);
+        console.log("Fruit listed for sale:", fruit.name);
+        close();
+        await reloadFruits();
+      } catch (error) {
+        console.error("Error processing transaction:", error);
+      } finally {
+        setIsProcessing(false);
+      }
     } else {
       close();
     }
@@ -71,6 +83,11 @@ const ConfirmationModal = ({
 
   return (
     <Modal opened={opened} onClose={close} centered>
+      <LoadingOverlay
+        visible={isProcessing}
+        zIndex={1000}
+        overlayProps={{ blur: 2 }}
+      />
       <Title size="lg" c="fruity-orange">
         {type === ModalType.BUY || type == ModalType.SELL ? (
           <>

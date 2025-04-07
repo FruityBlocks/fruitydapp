@@ -1,4 +1,4 @@
-import { Group, Stack, Text } from "@mantine/core";
+import { Badge, Group, Stack, Text } from "@mantine/core";
 import { IconCurrencyEthereum, IconLemon } from "@tabler/icons-react";
 import { Fruit } from "../../models/Fruit";
 
@@ -20,6 +20,9 @@ const CardInfos = ({ item }: CardInfosProps) => {
         <IconCurrencyEthereum size={17} />
         {item.price}
       </Text>
+      <Badge color={item.forSale ? "fruity-orange.3" : "fruity-black.6"}>
+        {item.forSale ? "Currently for sale" : "You own this fruit"}
+      </Badge>
     </Stack>
   );
 };

@@ -9,9 +9,10 @@ import CardInfos from "./CardInfos";
 
 interface CardMyFruitsProps {
   item: Fruit;
+  reloadFruits: () => Promise<void>;
 }
 
-const CardMyFruit = ({ item }: CardMyFruitsProps) => {
+const CardMyFruit = ({ item, reloadFruits }: CardMyFruitsProps) => {
   const [opened, { open, close }] = useDisclosure(false);
   const [modalType, setModalType] = useState<ModalType | null>(null);
 
@@ -30,13 +31,14 @@ const CardMyFruit = ({ item }: CardMyFruitsProps) => {
         withBorder
         style={{ cursor: "pointer", position: "relative" }}
       >
-        <MenuCard onSelect={handleOpenModal} />
+        <MenuCard onSelect={handleOpenModal} item={item} />
 
         <CardInfos item={item} />
       </Card>
 
       {modalType && (
         <ConfirmationModal
+          reloadFruits={reloadFruits}
           fruit={item}
           opened={opened}
           close={() => {

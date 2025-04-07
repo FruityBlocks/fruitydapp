@@ -1,12 +1,14 @@
 import { ActionIcon, Menu } from "@mantine/core";
 import { IconDots } from "@tabler/icons-react";
 import { ModalType } from "../../utils/enums";
+import { Fruit } from "../../models/Fruit";
 
 interface MenuCardProps {
   onSelect: (value: ModalType) => void;
+  item: Fruit;
 }
 
-const MenuCard = ({ onSelect }: MenuCardProps) => {
+const MenuCard = ({ onSelect, item }: MenuCardProps) => {
   return (
     <Menu shadow="md" width={150} position="top-end" withinPortal>
       <Menu.Target>
@@ -24,9 +26,11 @@ const MenuCard = ({ onSelect }: MenuCardProps) => {
       </Menu.Target>
 
       <Menu.Dropdown>
-        <Menu.Item onClick={() => onSelect(ModalType.SELL)}>
-          Sell this fruit
-        </Menu.Item>
+        {!item.forSale && (
+          <Menu.Item onClick={() => onSelect(ModalType.SELL)}>
+            Sell this fruit
+          </Menu.Item>
+        )}
         <Menu.Item onClick={() => onSelect(ModalType.RATE)}>
           Rate Seller
         </Menu.Item>
