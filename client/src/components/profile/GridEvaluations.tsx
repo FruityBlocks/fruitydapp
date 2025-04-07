@@ -1,19 +1,18 @@
-import { Box, SimpleGrid, Title } from "@mantine/core";
+import { Box, SimpleGrid, Text, Title } from "@mantine/core";
 import Evaluation from "./Evaluation";
-import { Eval } from "../../tempData";
+import useGetEvaluations from "../../hooks/useGetEvaluations";
 
-interface GridEvaluationsProps {
-  evals: Eval[];
-}
-
-const GridEvaluations = ({ evals }: GridEvaluationsProps) => {
+const GridEvaluations = () => {
+  const { ratings } = useGetEvaluations();
   return (
     <Box>
       <Title order={3}>What buyers think about you</Title>
       <SimpleGrid mb={50} mt={20} cols={{ base: 2, sm: 4, lg: 5 }} spacing="lg">
-        {evals?.map((item, index) => (
-          <Evaluation key={index} eval={item} />
-        ))}
+        {ratings.length > 0 ? (
+          ratings.map((item, index) => <Evaluation key={index} eval={item} />)
+        ) : (
+          <Text size="xl">No rating yet.</Text>
+        )}
       </SimpleGrid>
     </Box>
   );

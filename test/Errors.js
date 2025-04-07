@@ -7,6 +7,7 @@ const ERROR_FRUIT_NOT_FOR_SALE = "This fruit is not for sale!";
 const ERROR_CANNOT_BUY_ALREADY_OWNED_FRUIT = "The fruit is already yours.";
 const ERROR_INSUFFICIENT_FUNDS =
   "You do not have enough ETH to buy this fruit.";
+  const ERROR_CANNOT_RATE_YOURSELF = "You cannot rate yourself.";
 module.exports = {
   ERROR_USER_NOT_REGISTERED,
   ERROR_FRUIT_DOES_NOT_EXIST,
@@ -15,4 +16,5 @@ module.exports = {
   ERROR_FRUIT_NOT_FOR_SALE,
   ERROR_CANNOT_BUY_ALREADY_OWNED_FRUIT,
   ERROR_INSUFFICIENT_FUNDS,
+  ERROR_CANNOT_RATE_YOURSELF,
 };

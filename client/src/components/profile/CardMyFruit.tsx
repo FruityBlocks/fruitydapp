@@ -1,60 +1,57 @@
-import { Badge, Card, Group, Stack, Text } from "@mantine/core";
-import { IconCurrencyEthereum } from "@tabler/icons-react";
-import { Fruit } from "../../tempData";
-import ConfirmationModal from "../marketplace/ConfirmationModal";
+import { Card } from "@mantine/core";
+import ConfirmationModal from "../ConfirmationModal";
 import { useDisclosure } from "@mantine/hooks";
 import { ModalType } from "../../utils/enums";
+import { Fruit } from "../../models/Fruit";
+import { useState } from "react";
+import MenuCard from "./MenuCard";
+import CardInfos from "./CardInfos";
 
 interface CardMyFruitsProps {
   item: Fruit;
+  reloadFruits: () => Promise<void>;
 }
 
-const CardMyFruit = ({ item }: CardMyFruitsProps) => {
+const CardMyFruit = ({ item, reloadFruits }: CardMyFruitsProps) => {
   const [opened, { open, close }] = useDisclosure(false);
+  const [modalType, setModalType] = useState<ModalType | null>(null);
+
+  const handleOpenModal = (type: ModalType) => {
+    setModalType(type);
+    open();
+  };
+
   return (
     <>
       <Card
-        key={item.seller}
+        key={item.owner}
         shadow="sm"
         padding="lg"
         radius="md"
         withBorder
-        style={{
-          cursor: "pointer",
-        }}
+        style={{ cursor: "pointer", position: "relative" }}
       >
-        <Stack align="center" justify="center">
-          <Group align="center">
-            <Text
-              size="xl"
-              c={"fruity-orange"}
-              style={{
-                fontWeight: 600,
-              }}
-            >
-              {item.name}
-            </Text>
-          </Group>
-          <item.icon size={32} />
-          <Text size="sm" c="dimmed">
-            Type: {item.type}
-          </Text>
-          <Text size="lg" c="green">
-            Bought For
-            <IconCurrencyEthereum size={17} />
-            {item.price}
-          </Text>
-          <Badge onClick={open} color="fruity-orange.2" variant="light">
-            Rate Seller
-          </Badge>
-        </Stack>
+        <MenuCard
+          onSelect={handleOpenModal}
+          item={item}
+          reloadFruits={reloadFruits}
+        />
+
+        <CardInfos item={item} />
       </Card>
-      <ConfirmationModal
-        item={item}
-        opened={opened}
-        close={close}
-        type={ModalType.RATE}
-      />
+
+      {modalType && (
+        <ConfirmationModal
+          reloadFruits={reloadFruits}
+          fruit={item}
+          opened={opened}
+          close={() => {
+            close();
+            setModalType(null);
+          }}
+          type={modalType}
+        />
+      )}
     </>
   );
 };

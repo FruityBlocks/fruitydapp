@@ -1,8 +1,8 @@
 import { ReactNode, createContext, useState, useCallback } from "react";
 import { ethers } from "ethers";
-import { notifications } from "@mantine/notifications";
-import FruitMarketplace from "../../../artifacts/contracts/FruitMarketPlace.sol/FruitMarketplace.json";
+import FruitMarketplace from "../../../artifacts/contracts/NewFruitMarketPlace.sol/NewFruitMarketPlace.json";
 import { Web3ContextType } from "../models/interfaces";
+import { handleError } from "../models/Errors";
 
 const Web3Context = createContext<Web3ContextType | undefined>(undefined);
 
@@ -28,20 +28,20 @@ const Web3Provider = ({ children }: Web3ProviderProps) => {
 
   const connectWallet = useCallback(async () => {
     if (isConnecting) {
-      notifications.show({
-        title: "Connection in Progress",
-        message: "A wallet connection is already being processed. Please wait.",
-        color: "yellow",
-      });
+      handleError(
+        "Connection in Progress",
+        "A wallet connection is already being processed. Please wait.",
+        "yellow"
+      );
       return;
     }
 
     if (!window.ethereum) {
-      notifications.show({
-        title: "Wallet Not Found",
-        message: "Please install MetaMask to connect your wallet.",
-        color: "red",
-      });
+      handleError(
+        "Wallet Not Found",
+        "Please install MetaMask to connect your wallet.",
+        "red"
+      );
       return;
     }
 
@@ -54,23 +54,18 @@ const Web3Provider = ({ children }: Web3ProviderProps) => {
       const newAccount = await newSigner.getAddress();
       const networkData = await newProvider.getNetwork();
       const chainId = networkData.chainId.toString();
-      console.log(newSigner);
-      console.log(newAccount);
-      console.log(networkData);
-      console.log(chainId);
 
       setProvider(newProvider);
       setSigner(newSigner);
       setAccount(newAccount);
       setNetwork(chainId);
 
-      const rocketContract = new ethers.Contract(
+      const fruitContract = new ethers.Contract(
         DEPLOYED_ADDRESS,
         ABI,
         newSigner
       );
-      console.log(rocketContract);
-      setContract(rocketContract);
+      setContract(fruitContract);
 
       window.ethereum.on("accountsChanged", (accounts: string[]) => {
         setAccount(accounts.length ? accounts[0] : null);
@@ -79,22 +74,14 @@ const Web3Provider = ({ children }: Web3ProviderProps) => {
       window.ethereum.on("chainChanged", (newChainId: string) => {
         setNetwork(parseInt(newChainId, 16).toString());
       });
-    } catch (error: any) {
-      const errorMessages: Record<number, string> = {
-        "-32002":
-          "A wallet connection request is already in progress. Please check your MetaMask extension.",
-        "4001": "You declined the wallet connection. Please try again.",
-      };
-
-      notifications.show({
-        title: "Connection Error",
-        message:
-          errorMessages[error.code] ||
-          error.message ||
-          "Failed to connect wallet. Please try again.",
-        color: "red",
-      });
-
+      const isRegistered = await fruitContract.isRegistered();
+      if (!isRegistered) {
+        const tsx = await fruitContract.createUser();
+        await tsx.wait();
+      }
+    } catch (error) {
+      console.error(error);
+      handleError("Connection Error", "Failed to connect your wallet.", "red");
       setProvider(null);
       setSigner(null);
       setAccount(null);

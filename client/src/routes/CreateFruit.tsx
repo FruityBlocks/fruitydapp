@@ -1,7 +1,7 @@
 import { Title } from "@mantine/core";
-import SellForm from "../components/sell/SellForm";
+import CreateFruitForm from "../components/createFruit/CreateFruitForm";
 
-const Sell = () => {
+const CreateFruit = () => {
   return (
     <div>
       <Title
@@ -12,9 +12,9 @@ const Sell = () => {
       >
         Add your item to the MarketPlace
       </Title>
-      <SellForm />
+      <CreateFruitForm />
     </div>
   );
 };
 
-export default Sell;
+export default CreateFruit;

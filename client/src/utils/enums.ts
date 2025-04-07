@@ -1,4 +1,12 @@
 export enum ModalType {
-  RATE,
-  BUY,
+  RATE = "RATE",
+  BUY = "BUY",
+  SELL = "SELL",
+}
+
+export enum CreatingFruitFormState {
+  LOADING,
+  IDLE,
+  ERROR,
+  SUCCESS,
 }
