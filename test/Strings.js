@@ -7,6 +7,8 @@ const ZERO_INDEX = 0;
 const ONE_INDEX = 1;
 const BIG_INDEX = 1000;
 const EMPTY_ARRAY = "array";
+const RATING_COMMENT = "Wow";
+const RATING = 4;
 module.exports = {
   CONTRACT_NAME,
   FRUIT_NAME,
@@ -17,4 +19,6 @@ module.exports = {
   FRUIT_NAME_OTHER,
   ONE_INDEX,
   INSUFFICIENT_PRICE,
+  RATING,
+  RATING_COMMENT,
 };

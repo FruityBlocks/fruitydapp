@@ -10,12 +10,14 @@ contract NewFruitMarketPlace {
     string constant ERROR_FRUIT_NOT_FOR_SALE = "This fruit is not for sale!";
     string constant ERROR_CANNOT_BUY_ALREADY_OWNED_FRUIT = "The fruit is already yours.";
     string constant ERROR_INSUFFICIENT_FUNDS = "You do not have enough ETH to buy this fruit.";
+    string constant ERROR_CANNOT_RATE_YOURSELF = "You cannot rate yourself.";
 
     struct Fruit {
         uint256 id;
         string name;
         uint256 price;
         address owner;
+        address prevOwner;
         bool forSale;
     }
 
@@ -65,6 +67,7 @@ contract NewFruitMarketPlace {
             name: _name,
             price: _price,
             owner : msg.sender,
+            prevOwner : msg.sender,
             forSale: false
         }));
         userFruits[msg.sender].push(fruitId);
@@ -77,6 +80,7 @@ contract NewFruitMarketPlace {
         require(verifyOwnership(index), ERROR_NOT_FRUIT_OWNER);
 
         fruits[index].forSale = true;
+        fruits[index].prevOwner = msg.sender;
         fruits[index].price = _price;
         emit FruitForSale(_fruitId, _price);
     }
@@ -144,6 +148,28 @@ contract NewFruitMarketPlace {
         emit FruitSold(_fruitId, seller, msg.sender, fruit.price);
     }
 
+    function rate(string memory _comment, uint8 _rating, uint256 _fruitId) public {
+        require(isRegistered(), ERROR_USER_NOT_REGISTERED);
+        require(fruitExists(_fruitId), ERROR_FRUIT_DOES_NOT_EXIST);
+        uint256 index = fruitIdToIndex[_fruitId];
+        require(verifyOwnership(index), ERROR_NOT_FRUIT_OWNER);
+        Fruit storage fruit = fruits[index];
+        address prevOwnerAdd = fruit.prevOwner;
+        require(fruit.prevOwner != msg.sender, ERROR_CANNOT_RATE_YOURSELF);
+
+        UserRating memory rating = UserRating({
+            buyer: msg.sender,
+            comment: _comment,
+            rating: _rating
+        });
+        users[prevOwnerAdd].ratings.push(rating);
+        emit SellerRated(prevOwnerAdd, msg.sender, _rating, _comment);
+    }
+
+    function getUserRatings() public view returns (UserRating[] memory){
+        require(isRegistered(), ERROR_USER_NOT_REGISTERED);
+        return users[msg.sender].ratings;
+    }
 
     // Private functions 
 
