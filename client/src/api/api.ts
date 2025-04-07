@@ -6,8 +6,10 @@ export const contractActions = (contract: Contract) => ({
     await tx.wait();
     return tx;
   },
-  buyFruit: async (fruitId: number) => {
-    const tx = await contract.buyFruit(fruitId);
+  buyFruit: async (fruitId: number, price: number) => {
+    const tx = await contract.buyFruit(fruitId, {
+      value: parseEther(price.toString()),
+    });
     await tx.wait();
     return tx;
   },

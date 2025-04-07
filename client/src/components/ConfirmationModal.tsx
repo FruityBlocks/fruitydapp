@@ -75,9 +75,10 @@ const ConfirmationModal = ({
         close();
         await reloadFruits();
       } else if (type == ModalType.BUY) {
-        await buyFruit(fruit.id);
+        await buyFruit(fruit.id, fruit.price);
         console.log("You bought this fruit");
         close();
+        await reloadFruits();
       }
     } catch (error) {
       console.error("Error processing transaction:", error);

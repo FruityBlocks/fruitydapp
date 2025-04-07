@@ -7,9 +7,10 @@ import { ModalType } from "../../utils/enums";
 
 interface CardFruitProps {
   fruit: Fruit;
+  reloadMarketPlace: () => Promise<void>;
 }
 
-const CardFruit = ({ fruit }: CardFruitProps) => {
+const CardFruit = ({ fruit, reloadMarketPlace }: CardFruitProps) => {
   const [opened, { open, close }] = useDisclosure(false);
 
   return (
@@ -48,6 +49,7 @@ const CardFruit = ({ fruit }: CardFruitProps) => {
         </Stack>
       </Card>
       <ConfirmationModal
+        reloadFruits={reloadMarketPlace}
         type={ModalType.BUY}
         fruit={fruit}
         opened={opened}

@@ -50,7 +50,7 @@ const useGetFruitsForSale = () => {
     loadFruits();
   }, [contract]);
 
-  return { fruits, loading };
+  return { fruits, loading, reload: loadFruits };
 };
 
 export default useGetFruitsForSale;
