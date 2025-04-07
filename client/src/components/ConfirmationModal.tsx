@@ -13,7 +13,11 @@ import { IconCurrencyEthereum } from "@tabler/icons-react";
 import ButtonGroup from "./ButtonGroup";
 import { ModalType } from "../utils/enums";
 import { useForm } from "@mantine/form";
-import { validateComment } from "../utils/formValidation";
+import {
+  validateComment,
+  validateFruitName,
+  validatePrice,
+} from "../utils/formValidation";
 import { useState } from "react";
 import { contractActions } from "../api/api";
 import useWeb3 from "../hooks/useWeb3";
@@ -22,6 +26,7 @@ import {
   DEFAULT_NOTI_MESSAGE_TRANSACTION_FAIL,
   DEFAULT_NOTI_TITLE,
 } from "../utils/constants";
+import Form from "./createFruit/createFruitForm/Form";
 
 interface ConfirmationModalProps {
   opened: boolean;
@@ -36,6 +41,11 @@ interface FormValuesRate {
   rating: number;
 }
 
+interface FormValuesEdit {
+  fruitName: string;
+  price: string;
+}
+
 const ConfirmationModal = ({
   opened,
   close,
@@ -46,7 +56,9 @@ const ConfirmationModal = ({
   const [newPrice, setNewPrice] = useState<number>(fruit.price);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const { contract, signer } = useWeb3();
-  const { sellFruit, buyFruit, rateSeller } = contractActions(contract!);
+  const { sellFruit, buyFruit, rateSeller, createFruit } = contractActions(
+    contract!
+  );
   const form = useForm({
     initialValues: {
       comment: "",
@@ -57,24 +69,47 @@ const ConfirmationModal = ({
       rating: (value: number) => (value === 0 ? "Rating cannot be 0" : null),
     },
   });
+  const editForm = useForm({
+    initialValues: {
+      fruitName: "",
+      price: "",
+    },
+    validate: {
+      fruitName: validateFruitName,
+      price: validatePrice,
+    },
+  });
 
   const verifyOwnerShip = () => {
     return signer?.address === fruit.owner;
   };
 
-  const handleSubmit = async (values: FormValuesRate) => {
-    if (type === ModalType.RATE) {
-      if (form.errors.comment || form.errors.rating) return;
-      try {
-        await rateSeller(values.comment, values.rating, fruit.id);
-      } catch (error) {
-        console.error(error);
-        handleError(
-          "Error Rating",
-          "Could not rate the user at this time",
-          "red"
-        );
-      }
+  const handleSubmitRate = async (values: FormValuesRate) => {
+    if (form.errors.comment || form.errors.rating) return;
+    try {
+      await rateSeller(values.comment, values.rating, fruit.id);
+    } catch (error) {
+      console.error(error);
+      handleError(
+        "Error Rating",
+        "Could not rate the user at this time",
+        "red"
+      );
+    }
+  };
+
+  const handleSubmitEdit = async (values: FormValuesEdit) => {
+    if (editForm.errors.fruitName || editForm.errors.price) return;
+    try {
+      // Here instead of createFruit, we will editFruit based on the function in the API.ts
+      await createFruit(values.fruitName, values.price);
+    } catch (error) {
+      console.error(error);
+      handleError(
+        "Error Editing",
+        "Could not edit the listing at this time. The fruit name might be taken!",
+        "red"
+      );
     }
   };
 
@@ -82,16 +117,19 @@ const ConfirmationModal = ({
     try {
       setIsProcessing(true);
       if (type === ModalType.RATE) {
-        await form.onSubmit(handleSubmit)();
+        await form.onSubmit(handleSubmitRate)();
         close();
       } else if (type === ModalType.SELL) {
         await sellFruit(fruit.id, newPrice);
         close();
         await reloadFruits();
-      } else if (type == ModalType.BUY) {
+      } else if (type === ModalType.BUY) {
         await buyFruit(fruit.id, fruit.price);
         close();
         await reloadFruits();
+      } else if (type === ModalType.EDIT) {
+        await editForm.onSubmit(handleSubmitEdit)();
+        close();
       }
     } catch (error) {
       console.error("Error processing transaction:", error);
@@ -105,6 +143,10 @@ const ConfirmationModal = ({
     }
   };
 
+  const handleReset = () => {
+    editForm.reset();
+  };
+
   return (
     <Modal opened={opened} onClose={close} centered>
       <LoadingOverlay
@@ -113,20 +155,24 @@ const ConfirmationModal = ({
         overlayProps={{ blur: 2 }}
       />
       <Title size="lg" c="fruity-orange">
-        {type === ModalType.BUY || type == ModalType.SELL ? (
+        {type === ModalType.BUY || type === ModalType.SELL ? (
           <>
-            You are about to {type == ModalType.SELL ? "Sell" : "Buy"}{" "}
+            You are about to {type === ModalType.SELL ? "Sell" : "Buy"}{" "}
             {fruit.name} for <IconCurrencyEthereum size={20} /> {fruit.price}
           </>
-        ) : (
+        ) : type === ModalType.RATE ? (
           "Rate the buyer"
+        ) : (
+          "Edit Listing"
         )}
       </Title>
 
       <Stack mt="lg">
-        <Text size="md">
-          Seller: {fruit.owner.slice(0, 6)}...{fruit.owner.slice(-4)}
-        </Text>
+        {!ModalType.EDIT && (
+          <Text size="md">
+            Seller: {fruit.owner.slice(0, 6)}...{fruit.owner.slice(-4)}
+          </Text>
+        )}
 
         {type === ModalType.RATE && (
           <>
@@ -164,8 +210,18 @@ const ConfirmationModal = ({
           </>
         )}
 
+        {type === ModalType.EDIT && (
+          <Form
+            form={editForm}
+            onSubmit={handleConfirmClick}
+            reset={handleReset}
+          />
+        )}
+
         {verifyOwnerShip() && type === ModalType.BUY ? (
           <Text c="red">You cannot buy your own fruit</Text>
+        ) : type === ModalType.EDIT ? (
+          ""
         ) : (
           <ButtonGroup
             submit={() => handleConfirmClick()}

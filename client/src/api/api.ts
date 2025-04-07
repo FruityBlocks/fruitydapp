@@ -18,9 +18,10 @@ export const contractActions = (contract: Contract) => ({
     await tx.wait();
     return tx;
   },
-  createFruit: async (name: string, price: bigint) => {
-    const tx = await contract.addFruit(name, price);
+  createFruit: async (name: string, price: string) => {
+    const tx = await contract.addFruit(name, parseEther(price.toString()));
     await tx.wait();
     return tx;
   },
+  // We will need to edit the listing here !
 });
