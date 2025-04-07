@@ -17,6 +17,11 @@ import { validateComment } from "../utils/formValidation";
 import { useState } from "react";
 import { contractActions } from "../api/api";
 import useWeb3 from "../hooks/useWeb3";
+import { handleError } from "../models/Errors";
+import {
+  DEFAULT_NOTI_MESSAGE_TRANSACTION_FAIL,
+  DEFAULT_NOTI_TITLE,
+} from "../models/constants";
 
 interface ConfirmationModalProps {
   opened: boolean;
@@ -82,6 +87,11 @@ const ConfirmationModal = ({
       }
     } catch (error) {
       console.error("Error processing transaction:", error);
+      handleError(
+        DEFAULT_NOTI_TITLE,
+        DEFAULT_NOTI_MESSAGE_TRANSACTION_FAIL,
+        "red"
+      );
     } finally {
       setIsProcessing(false);
     }

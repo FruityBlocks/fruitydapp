@@ -31,7 +31,11 @@ const CardMyFruit = ({ item, reloadFruits }: CardMyFruitsProps) => {
         withBorder
         style={{ cursor: "pointer", position: "relative" }}
       >
-        <MenuCard onSelect={handleOpenModal} item={item} />
+        <MenuCard
+          onSelect={handleOpenModal}
+          item={item}
+          reloadFruits={reloadFruits}
+        />
 
         <CardInfos item={item} />
       </Card>

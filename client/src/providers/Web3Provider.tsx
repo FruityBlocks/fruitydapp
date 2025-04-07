@@ -1,8 +1,8 @@
 import { ReactNode, createContext, useState, useCallback } from "react";
 import { ethers } from "ethers";
-import { notifications } from "@mantine/notifications";
 import FruitMarketplace from "../../../artifacts/contracts/NewFruitMarketPlace.sol/NewFruitMarketPlace.json";
 import { Web3ContextType } from "../models/interfaces";
+import { handleError } from "../models/Errors";
 
 const Web3Context = createContext<Web3ContextType | undefined>(undefined);
 
@@ -28,20 +28,20 @@ const Web3Provider = ({ children }: Web3ProviderProps) => {
 
   const connectWallet = useCallback(async () => {
     if (isConnecting) {
-      notifications.show({
-        title: "Connection in Progress",
-        message: "A wallet connection is already being processed. Please wait.",
-        color: "yellow",
-      });
+      handleError(
+        "Connection in Progress",
+        "A wallet connection is already being processed. Please wait.",
+        "yellow"
+      );
       return;
     }
 
     if (!window.ethereum) {
-      notifications.show({
-        title: "Wallet Not Found",
-        message: "Please install MetaMask to connect your wallet.",
-        color: "red",
-      });
+      handleError(
+        "Wallet Not Found",
+        "Please install MetaMask to connect your wallet.",
+        "red"
+      );
       return;
     }
 
@@ -85,21 +85,8 @@ const Web3Provider = ({ children }: Web3ProviderProps) => {
         await tsx.wait();
       }
     } catch (error: any) {
-      const errorMessages: Record<number, string> = {
-        "-32002":
-          "A wallet connection request is already in progress. Please check your MetaMask extension.",
-        "4001": "You declined the wallet connection. Please try again.",
-      };
-
-      notifications.show({
-        title: "Connection Error",
-        message:
-          errorMessages[error.code] ||
-          error.message ||
-          "Failed to connect wallet. Please try again.",
-        color: "red",
-      });
-
+      console.error(error);
+      handleError("Connection Error", "Failed to connect your wallet.", "red");
       setProvider(null);
       setSigner(null);
       setAccount(null);

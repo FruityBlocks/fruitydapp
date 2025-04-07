@@ -6,6 +6,7 @@ import { Fruit } from "../../models/Fruit";
 interface MenuCardProps {
   onSelect: (value: ModalType) => void;
   item: Fruit;
+  reloadFruits: () => void;
 }
 
 const MenuCard = ({ onSelect, item }: MenuCardProps) => {
