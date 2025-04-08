@@ -85,6 +85,7 @@ contract NewFruitMarketPlace {
 
         fruits[indexOfFruit].name = _name;
         fruitNameExists[fruits[indexOfFruit].name] = false;
+        fruitNameExists[_name] = false;
         fruits[indexOfFruit].price = _price;
     
         emit FruitEdited(_fruitId, _name, _price);

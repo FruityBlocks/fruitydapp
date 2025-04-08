@@ -101,7 +101,7 @@ const ConfirmationModal = ({
   const handleSubmitEdit = async (values: FormValuesEdit) => {
     if (editForm.errors.fruitName || editForm.errors.price) return;
     try {
-      await editFruit(values.fruitName, values.price);
+      await editFruit(fruit.id, values.fruitName, values.price);
     } catch (error) {
       console.error(error);
       handleError(
