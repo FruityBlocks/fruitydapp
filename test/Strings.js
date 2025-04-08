@@ -2,6 +2,7 @@ const CONTRACT_NAME = "NewFruitMarketPlace";
 const FRUIT_NAME = "BANANA";
 const FRUIT_NAME_OTHER = "MELON";
 const DEFAULT_PRICE = ethers.parseEther("1");
+const OTHER_PRICE = ethers.parseEther("2");
 const INSUFFICIENT_PRICE = ethers.parseEther("0.5");
 const ZERO_INDEX = 0;
 const ONE_INDEX = 1;
@@ -13,6 +14,7 @@ module.exports = {
   CONTRACT_NAME,
   FRUIT_NAME,
   DEFAULT_PRICE,
+  OTHER_PRICE,
   ZERO_INDEX,
   BIG_INDEX,
   EMPTY_ARRAY,

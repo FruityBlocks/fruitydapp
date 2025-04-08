@@ -23,5 +23,9 @@ export const contractActions = (contract: Contract) => ({
     await tx.wait();
     return tx;
   },
-  // We will need to edit the listing here !
+  editFruit: async (fruitId: number, name: string, price: string) => {
+    const tx = await contract.editFruit(fruitId, name, parseEther(price.toString()));
+    await tx.wait();
+    return tx;
+  }
 });

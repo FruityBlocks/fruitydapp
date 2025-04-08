@@ -56,7 +56,7 @@ const ConfirmationModal = ({
   const [newPrice, setNewPrice] = useState<number>(fruit.price);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const { contract, signer } = useWeb3();
-  const { sellFruit, buyFruit, rateSeller, createFruit } = contractActions(
+  const { sellFruit, buyFruit, rateSeller, editFruit } = contractActions(
     contract!
   );
   const form = useForm({
@@ -101,8 +101,7 @@ const ConfirmationModal = ({
   const handleSubmitEdit = async (values: FormValuesEdit) => {
     if (editForm.errors.fruitName || editForm.errors.price) return;
     try {
-      // Here instead of createFruit, we will editFruit based on the function in the API.ts
-      await createFruit(values.fruitName, values.price);
+      await editFruit(values.fruitName, values.price);
     } catch (error) {
       console.error(error);
       handleError(

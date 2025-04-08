@@ -43,6 +43,7 @@ contract NewFruitMarketPlace {
 
     event Registration(address indexed user);
     event FruitAdded(uint256 indexed fruitId, string name, uint256 price);
+    event FruitEdited(uint256 indexed fruitId, string name, uint256 price);
     event FruitForSale(uint256 indexed fruitId, uint256 price);
     event FruitSold(uint256 indexed fruitId, address indexed seller, address indexed buyer, uint256 price);
     event SellerRated(address indexed seller, address indexed buyer, uint8 rating, string comment);
@@ -72,6 +73,21 @@ contract NewFruitMarketPlace {
         }));
         userFruits[msg.sender].push(fruitId);
         emit FruitAdded(fruitId, _name, _price);
+    }
+
+    function editFruit(uint256 _fruitId, string memory _name, uint256 _price) public {
+        uint256 indexOfFruit = getIndex(_fruitId);
+        require(isRegistered(), ERROR_USER_NOT_REGISTERED);
+        require(isForSale(indexOfFruit), ERROR_FRUIT_NOT_FOR_SALE);
+        require(!fruitNameExists[_name], ERROR_FRUIT_ALREADY_EXISTS);
+        require(verifyOwnership(indexOfFruit), ERROR_NOT_FRUIT_OWNER);
+        require(fruitExists(_fruitId), ERROR_FRUIT_DOES_NOT_EXIST);
+
+        fruits[indexOfFruit].name = _name;
+        fruitNameExists[fruits[indexOfFruit].name] = false;
+        fruits[indexOfFruit].price = _price;
+    
+        emit FruitEdited(_fruitId, _name, _price);
     }
 
     function sellFruit(uint256 _fruitId, uint256 _price) public {
@@ -215,5 +231,4 @@ contract NewFruitMarketPlace {
     function isForSale(uint256 _index) private view returns (bool){
         return fruits[_index].forSale == true;
     }
-
 }
