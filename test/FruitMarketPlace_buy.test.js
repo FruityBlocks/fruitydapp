@@ -1,11 +1,10 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
-const errorMessages = require("./Errors");
-("./Errors");
-const emits = require("./Emits");
-const strings = require("./Strings");
+const errorMessages = require("./const/Errors");
+const emits = require("./const/Emits");
+const strings = require("./const/Strings");
 
-describe("NewFruitMarketPlaceBuyFruits", () => {
+describe("FruitMarketPlaceBuyFruit", () => {
   let fruitContract;
   let owner, buyer, random;
 
@@ -48,9 +47,6 @@ describe("NewFruitMarketPlaceBuyFruits", () => {
     );
   });
 
-  // =====================
-  //        TEST 7
-  // =====================
   it("givenBuyFruit_whenInsufficientFund_shouldRevertWithError", async () => {
     await expect(
       fruitContract.connect(buyer).buyFruit(strings.ZERO_INDEX, {

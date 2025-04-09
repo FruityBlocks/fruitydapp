@@ -1,4 +1,4 @@
-const CONTRACT_NAME = "NewFruitMarketPlace";
+const CONTRACT_NAME = "FruitMarketPlace";
 const FRUIT_NAME = "BANANA";
 const FRUIT_NAME_OTHER = "MELON";
 const DEFAULT_PRICE = ethers.parseEther("1");

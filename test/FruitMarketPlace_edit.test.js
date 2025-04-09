@@ -1,12 +1,10 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
-const errorMessages = require("./Errors");
-const emits = require("./Emits");
+const errorMessages = require("./const/Errors");
+const emits = require("./const/Emits");
+const strings = require("./const/Strings");
 
-("./Errors");
-const strings = require("./Strings");
-
-describe("NewFruitMarketPlaceEditFruits", () => {
+describe("FruitMarketPlaceSell", () => {
   let fruitContract;
   let owner, buyer, random;
 
@@ -46,6 +44,9 @@ describe("NewFruitMarketPlaceEditFruits", () => {
     );
   });
 
+  // =====================
+  //        TEST 6
+  // =====================
   it("givenEditFruit_whenFruitValid_shouldCorrectlyUpdateFruit", async () => {
     await expect(fruitContract.editFruit(strings.ZERO_INDEX, strings.FRUIT_NAME_OTHER, strings.OTHER_PRICE)).to.emit(fruitContract, emits.FRUIT_EDITED);
     const fruit = await fruitContract.getFruitForSale(strings.ZERO_INDEX);

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract NewFruitMarketPlace {
+contract FruitMarketPlace {
 
     string constant ERROR_USER_NOT_REGISTERED = "User is not registered, you are not allowed to do this action.";
     string constant ERROR_FRUIT_DOES_NOT_EXIST = "The fruit does not exist";
