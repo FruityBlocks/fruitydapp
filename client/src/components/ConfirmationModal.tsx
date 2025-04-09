@@ -102,6 +102,7 @@ const ConfirmationModal = ({
     if (editForm.errors.fruitName || editForm.errors.price) return;
     try {
       await editFruit(fruit.id, values.fruitName, values.price);
+      await reloadFruits();
     } catch (error) {
       console.error(error);
       handleError(
