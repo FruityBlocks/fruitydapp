@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useState, useCallback } from "react";
 import { ethers } from "ethers";
-import FruitMarketplace from "../../../artifacts/contracts/NewFruitMarketPlace.sol/NewFruitMarketPlace.json";
+import FruitMarketplace from "../../../artifacts/contracts/FruitMarketPlace.sol/FruitMarketPlace.json";
 import { Web3ContextType } from "../models/interfaces";
 import { handleError } from "../models/Errors";
 
