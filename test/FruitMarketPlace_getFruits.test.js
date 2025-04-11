@@ -1,12 +1,10 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
-const errorMessages = require("./Errors");
-("./Errors");
-const emits = require("./Emits");
-const strings = require("./Strings");
+const errorMessages = require("./const/Errors");
+const strings = require("./const/Strings");
 
 
-describe("NewFruitMarketPlaceGetFruits", () => {
+describe("FruitMarketPlaceGetFruits", () => {
   let fruitContract;
   let owner, buyer, random;
 

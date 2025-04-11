@@ -1,12 +1,11 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
-const errorMessages = require("./Errors");
-("./Errors");
-const emits = require("./Emits");
-const strings = require("./Strings");
+const errorMessages = require("./const/Errors");
+const emits = require("./const/Emits");
+const strings = require("./const/Strings");
 
 
-describe("NewFruitMarketPlace", () => {
+describe("FruitMarketPlaceAddFruit", () => {
   let fruitContract;
   let owner, buyer, random;
 
@@ -22,7 +21,7 @@ describe("NewFruitMarketPlace", () => {
   // =====================
   //        TEST 1
   // =====================
-  it("givenNewFruitMarketPlace_whenInstanceStart_shouldDeployContract", async () => {
+  it("givenFruitMarketPlace_whenInstanceStart_shouldDeployContract", async () => {
     expect(await fruitContract.getAddress()).to.not.equal(ethers.ZeroAddress);
   });
 
